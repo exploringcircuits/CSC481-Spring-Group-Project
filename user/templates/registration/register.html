@@ -1,0 +1,97 @@
+{% extends "base.html" %} {% block content %}
+
+<br />
+<div
+  class="container"
+  style="max-width: 800px; margin: auto; display: flex; gap: 20px"
+>
+  <!-- Grey div on the left -->
+  <div
+    style="
+      flex: 1;
+      padding: 20px;
+      border-radius: 12px;
+      color: white;
+      min-width: 250px;
+    "
+  >
+    <h1 style="margin-bottom: 10px; color: black">PLAY NBA FANTASY</h1>
+    <h4 style="color: black">
+      Create a league and invite your friends to see who will win.
+    </h4>
+
+    <!-- Mini Register button inside header -->
+    <form method="POST" style="margin-top: 20px">
+      {% csrf_token %}
+      <button
+        type="submit"
+        class="btn btn-success"
+        style="
+          padding: 6px 15px;
+          font-size: 14px;
+          background-color: #28a745;
+          border: none;
+          border-radius: 6px;
+        "
+      >
+        Register
+      </button>
+    </form>
+  </div>
+
+  <!-- Main registration form on the right -->
+  <form class="form-group" method="POST" style="flex: 1; min-width: 250px">
+    {% csrf_token %}
+
+    <input
+      class="form-control"
+      type="text"
+      name="username"
+      placeholder="Username"
+      required
+      style="
+        padding: 12px 15px;
+        font-size: 16px;
+        margin-bottom: 15px;
+        width: 100%;
+        border-radius: 8px;
+      "
+    />
+
+    <input
+      class="form-control"
+      type="password"
+      name="password"
+      placeholder="Password"
+      required
+      style="
+        padding: 12px 15px;
+        font-size: 16px;
+        margin-bottom: 15px;
+        width: 100%;
+        border-radius: 8px;
+      "
+    />
+
+    <input
+      class="form-control"
+      type="password"
+      name="confirm_password"
+      placeholder="Confirm Password"
+      required
+      style="
+        padding: 12px 15px;
+        font-size: 16px;
+        margin-bottom: 20px;
+        width: 100%;
+        border-radius: 8px;
+      "
+    />
+
+    <p style="margin-top: 10px">
+      Already have an account? <a href="{% url 'login' %}">Login</a>
+    </p>
+  </form>
+</div>
+
+{% endblock content %}
