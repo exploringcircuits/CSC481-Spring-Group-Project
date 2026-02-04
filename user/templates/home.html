@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <title>Document</title>
+  </head>
+  <body>
+    <nav class="navbar navbar-inverse">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">Fantasy Fanatics NBA League</a>
+        </div>
+        <ul class="nav navbar-nav">
+          <li class="active"><a href="#">Home</a></li>
+          <li class="active">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#"
+              >Players <span class="caret"></span
+            ></a>
+            <ul class="dropdown-menu">
+              <li><a href="#">Rosters</a></li>
+              <li><a href="#">Stats</a></li>
+            </ul>
+          </li>
+        </ul>
+        <ul class="nab navbar-nav navbar-right">
+<form method="POST" action="{% url 'logout' %}">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-danger">Logout</button>
+    </form>
+          </ul>
+      </div>
+    </nav>
+    <h3>Hi {{user.username}}, Welcome to your Fantasy Fanatics dashboard.</h3>
+    
+</html>
