@@ -14,7 +14,7 @@ def home(request):
 def register_view(request):
     if request.method == 'POST':
         username = request.POST['username']
-        
+        email = request.POST['email']
         password = request.POST['password']
         confirm_password = request.POST['confirm_password']
         if password == confirm_password:

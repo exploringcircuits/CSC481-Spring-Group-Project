@@ -22,7 +22,7 @@ def root_redirect(request):
     return redirect('login')
 
 urlpatterns = [
-     path('', root_redirect),
+    path('', root_redirect),
     path('admin/', admin.site.urls),
     path('user/', include('user.urls')),
     path('user/', include('django.contrib.auth.urls')),
