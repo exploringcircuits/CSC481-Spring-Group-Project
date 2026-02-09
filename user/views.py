@@ -59,3 +59,5 @@ def test_email(request):
         fail_silently=False,  # Make Django raise errors if email fails
     )
     return HttpResponse('Test email sent!')
+
+#Sign up view add here 
