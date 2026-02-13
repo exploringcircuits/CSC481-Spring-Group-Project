@@ -15,7 +15,7 @@
 ## How To Setup The Backend Server
 
 **FIRST INSTALL IN TERMINAL**
-
+```
 python -m pip install Django
 
 python -m pip install djangorestframework
@@ -25,11 +25,9 @@ python -m pip install djangorestframework-camel-case
 python -m pip install django-cors-headers
 
 python -m pip install nba_api
-
+```
 **HOW TO RUN**
-
-in terminal: 
-
+```
 python manage.py runserver
-
+```
 ---
