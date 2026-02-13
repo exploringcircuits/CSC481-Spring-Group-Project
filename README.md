@@ -31,3 +31,5 @@ python -m pip install nba_api
 python manage.py runserver
 ```
 ---
+
+This project is being built using [nba_api](https://github.com/swar/nba_api).
