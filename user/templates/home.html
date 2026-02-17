@@ -10,20 +10,18 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <title>Document</title>
-  </head>
-  <body>
-    <!--Style section-->
-    <style>
 
-      .center{
+    <style>
+      .center {
         display: flex;
+        flex-direction: column; /* Stacks items vertically */
         justify-content: center;
         align-items: center;
-        height: 200px;
+        height: auto; /* Changed from 200px so content doesn't spill out */
         border: 3px solid white;
       }
 
-      .button{
+      .button {
         background-color: white;
         border: none;
         color: black;
@@ -35,34 +33,40 @@
         transition-duration: 0.5s;
         cursor: pointer;
       }
+
       .button1 {border: 16px solid #04AA6D;}
-.button2 {border: 16px solid #008CBA;}
-.button3 {border: 16px solid #f44336;}
-.button4 {border: 16px solid #e7e7e7;}
-.button5 {border: 16px solid #555555;}
+      .button2 {border: 16px solid #008CBA;}
+      .button3 {border: 16px solid #f44336;}
+      .button4 {border: 16px solid #e7e7e7;}
+      .button5 {border: 16px solid #555555;}
 
-.button1:hover {
-  background-color: #04AA6D;
-  color: white;
-}
-.button2:hover {
-  background-color: #008CBA;
-  color: white;
-}
+      .button1:hover { background-color: #04AA6D; color: white; }
+      .button2:hover { background-color: #008CBA; color: white; }
+      .button3:hover { background-color: #f44336; color: white; }
+      .button4:hover { background-color: #e7e7e7; }
+      .button5:hover { background-color: #555555; color: white; }
 
-.button3:hover {
-  background-color: #f44336;
-  color: white;
-}
+      /* Styles for the Scoring Highlight Button */
+      .LargeRadioControl__Contents {
+        background-color: white;
+        border: 1px solid gray;
+        padding: 10px;
+        border-radius: 4px;
+        cursor: pointer;
+        text-align: center;
+        transition: 0.3s;
+      }
 
-.button4:hover {background-color: #e7e7e7;}
-
-.button5:hover {
-  background-color: #555555;
-  color: white;
-}
+      .LargeRadioControl__Selected {
+        background-color: #2b5797; /* Darker blue to contrast the background */
+        border: 2px solid white;
+        color: white;
+        font-weight: bold;
+      }
     </style>
+  </head>
 
+  <body>
     <nav class="navbar navbar-inverse">
       <div class="container-fluid">
         <div class="navbar-header">
@@ -81,37 +85,47 @@
           </li>
         </ul>
         <ul class="nab navbar-nav navbar-right">
-<form method="POST" action="{% url 'logout' %}">
-      {% csrf_token %}
-      <button type="submit" class="btn btn-danger">Logout</button>
-    </form>
-          </ul>
+          <form method="POST" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Logout</button>
+          </form>
+        </ul>
       </div>
     </nav>
+    
     <h3>Hi {{user.username}}, Welcome to your Fantasy Fanatics dashboard.</h3>
     
-    <div class = "center">
-      <!--Outer contain holding the rest -->
+    <div class="center" style="background-color: cornflowerblue; padding: 20px; max-width: 400px; margin: 0 auto; border-radius: 8px;">
 
-      <div>
-        <!--Div for user form(Team name)-->
+      <div style="width: 100%; text-align: center;">
         <form>
           <label for="leaguename">League Name</label><br>
-          <input type="text" id="leaguename" name="leaguename"/><br>
+          <input type="text" id="leaguename" name="leaguename" style="width: 80%; margin-bottom: 10px;"/><br>
+
           <label for="numteams">Number of Teams</label><br>
+        </form>
+      </div>
 
-        </form><br>
-      </div class="center">
-      <!--# of teams selection-->
-      
-      <button class ="button button1">2</button>
-      <button class ="button button2">4</button>
-      <button class ="button button3">6</button><br>
+      <div style="margin-top: 10px;">
+        <button class ="button button1">2</button>
+        <button class ="button button2">4</button>
+        <button class ="button button3">6</button><br>
+      </div>
+
+      <div style="margin-top: 20px; width: 80%; text-align: center;">
+        <label for="scoringoptions">Scoring</label>
+        
+        <div id="h2h-button" class="LargeRadioControl__Contents" onclick="highlightMe()">
+          <div class="LargeRadioControl__Title">H2H Points</div>
+        </div>
+      </div>
+
     </div>
 
-    <div class = center>
-      <!--Form for league scoring options-->
-      <label for="scoringoptions">Scoring</label>
-    </div>
-
+    <script>
+      function highlightMe() {
+        document.getElementById("h2h-button").classList.toggle("LargeRadioControl__Selected");
+      }
+    </script>
+  </body>
 </html>
