@@ -1,0 +1,90 @@
+/* LeagueInfoCard Component */
+.league-info-header {
+    margin-bottom: 1rem;
+}
+
+.league-info-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
+}
+
+.league-info-left {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.league-info-right {
+    display: flex;
+    flex-direction: column;
+}
+
+.league-info-detail {
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.9rem;
+    color: black;
+    white-space: nowrap;
+}
+
+.league-info-label {
+    font-weight: 600;
+    margin-right: 0.5rem;
+}
+
+.league-info-warning {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.2rem;
+    color: red;
+    margin-top: 1rem;
+    text-align: center;
+}
+
+.league-info-buttons {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    justify-content: center;
+}
+
+.league-info-button {
+    border: none;
+    background: linear-gradient(65deg, #6a1523, #ffc987);
+    color: white;
+    padding: 0.75rem 3rem;
+    font-size: 0.95rem;
+    font-family: 'Poppins', sans-serif;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.league-info-button:hover {
+    opacity: 0.9;
+}
+
+.league-name {
+    font-family: 'Poppins', sans-serif;
+    font-size: 2rem;
+    font-weight: 600;
+    color: black;
+    white-space: nowrap;
+}
+
+.league-info-links {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    margin-top: -1rem;
+}
+
+.league-info-link {
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.95rem;
+    color: #38b6ff;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.league-info-link:hover {
+    opacity: 0.8;
+}

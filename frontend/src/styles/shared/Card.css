@@ -1,0 +1,70 @@
+/* Card Component Styles */
+
+.card {
+    background-color: white;
+    border-radius: 4px;
+    overflow: hidden;
+    transition: all 0.2s ease;
+}
+
+.card--elevated {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card--elevated:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.card--clickable {
+    cursor: pointer;
+}
+
+.card--clickable:hover {
+    transform: translateY(-2px);
+}
+
+.card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 1rem;
+    border-bottom: 1px solid #eee;
+    gap: 1rem;
+}
+
+.card-title-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.card-title {
+    margin: 0;
+    padding: 0;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: black;
+    font-family: 'Poppins', sans-serif;
+}
+
+.card-subtitle {
+    margin: 0;
+    padding: 0;
+    font-size: 0.85rem;
+    color: #666;
+    font-family: 'Poppins', sans-serif;
+}
+
+.card-actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-shrink: 0;
+}
+
+.card-body {
+    padding: 1rem;
+}
+
+.card-body:empty {
+    padding: 0;
+}

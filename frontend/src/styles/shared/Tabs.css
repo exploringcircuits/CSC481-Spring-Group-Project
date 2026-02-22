@@ -1,0 +1,35 @@
+.tabs-container {
+    display: flex;
+    gap: 0;
+}
+
+.tab-button {
+    background: none;
+    border: none;
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    font-size: 1rem;
+    color: black;
+    opacity: 0.5;
+    font-weight: bold;
+    transition: opacity 0.2s ease;
+}
+
+.tab-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.3;
+}
+
+.tab-button.active {
+    opacity: 1;
+    font-weight: bold;
+    background: linear-gradient(65deg, #6a1523, #ffc987);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+    border-bottom: 2px solid;
+    border-image: linear-gradient(65deg, #6a1523, #ffc987) 1;
+    margin-bottom: -1px;
+    padding-bottom: calc(0.75rem - 2px);
+}

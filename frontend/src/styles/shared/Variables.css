@@ -1,0 +1,84 @@
+/* CSS Variables for Theming */
+
+:root {
+    /* Colors */
+    --color-primary: #6a1523;
+    --color-primary-dark: #5a1220;
+    --color-accent: #ffc987;
+    --color-accent-light: rgba(255, 201, 135, 0.15);
+    --color-gradient: linear-gradient(65deg, #6a1523, #ffc987);
+    --color-gray-light: #f8f9fa;
+    --color-gray-medium: #b4b4b4;
+    --color-gray-dark: #495057;
+    --color-text-primary: #000000;
+    --color-text-secondary: #666666;
+    --color-text-tertiary: #999999;
+    --color-text-disabled: #cccccc;
+    --color-border: #ddd;
+    --color-border-hover: #bbb;
+    --color-background: #ffffff;
+    --color-bg-input: #ffffff;
+    --color-bg-input-hover: #fafafa;
+    --color-bg-input-focus: #ffffff;
+    --color-bg-disabled: #f0f0f0;
+    --color-shadow: rgba(0, 0, 0, 0.1);
+    --color-shadow-dark: rgba(0, 0, 0, 0.2);
+
+    /* Typography */
+    --font-family-primary: 'Poppins', sans-serif;
+    --font-size-xs: 0.65rem;
+    --font-size-sm: 0.75rem;
+    --font-size-base: 0.85rem;
+    --font-size-md: 0.9rem;
+    --font-size-lg: 1rem;
+    --font-size-xl: 1.1rem;
+    --font-size-2xl: 1.8rem;
+
+    --font-weight-normal: 400;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+
+    /* Spacing */
+    --spacing-xs: 0.25rem;
+    --spacing-sm: 0.5rem;
+    --spacing-md: 0.75rem;
+    --spacing-lg: 1rem;
+    --spacing-xl: 1.5rem;
+    --spacing-2xl: 2rem;
+
+    /* Border Radius */
+    --radius-none: 0;
+    --radius-sm: 2px;
+    --radius-md: 3px;
+    --radius-lg: 4px;
+    --radius-full: 9999px;
+
+    /* Shadows */
+    --shadow-sm: 0 2px 8px var(--color-shadow);
+    --shadow-md: 0 4px 12px var(--color-shadow);
+    --shadow-lg: 15px 15px 30px var(--color-shadow-dark);
+    --shadow-xl: 0 10px 30px var(--color-shadow-dark);
+
+    /* Transitions */
+    --transition-fast: 0.1s ease;
+    --transition-base: 0.2s ease;
+    --transition-slow: 0.3s ease;
+    --transition-duration: 0.2s;
+    --transition-timing: ease;
+
+    /* Z-Index */
+    --z-dropdown: 10;
+    --z-modal: 50;
+    --z-tooltip: 100;
+}
+
+/* Dark Mode Support (Optional Future) */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --color-text-primary: #ffffff;
+        --color-text-secondary: #cccccc;
+        --color-background: #1e1e1e;
+        --color-gray-light: #2d2d2d;
+        --color-border: #444;
+    }
+}

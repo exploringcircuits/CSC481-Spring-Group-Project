@@ -1,0 +1,79 @@
+/* League Home page */
+.league-home-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.league-home-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: center;
+    padding: 0 1rem;
+}
+
+.league-home-grid {
+    display: grid;
+    grid-template-columns: minmax(200px, 0.8fr) auto;
+    grid-template-rows: 1fr 1fr;
+    gap: 1.5rem;
+}
+
+/* Shared card styles */
+.league-card {
+    background-color: white;
+    color: black;
+    padding: 1.5rem;
+    box-shadow: 12px 12px 24px rgba(0, 0, 0, 0.75);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.league-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.25rem;
+}
+
+.league-card-label {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    color: black;
+    opacity: 0.5;
+}
+
+.league-card--tall {
+    grid-row: span 2;
+    height: 100%;
+}
+
+.league-card--wide {
+    min-height: 180px;
+    min-width: 700px;
+    height: 100%;
+}
+
+.switch-league-button {
+    position: fixed;
+    bottom: 2rem;
+    left: 1rem;
+    background: none;
+    border: none;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+.switch-league-button:hover {
+    opacity: 0.8;
+}

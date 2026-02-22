@@ -1,0 +1,29 @@
+/* LMNote Component */
+.lmnote-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: black;
+    opacity: 1;
+    margin: 0 0 0.5rem 0;
+}
+
+.lmnote-description {
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.95rem;
+    color: black;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.lmnote-edit-link {
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.9rem;
+    color: #38b6ff;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.lmnote-edit-link:hover {
+    opacity: 0.8;
+}

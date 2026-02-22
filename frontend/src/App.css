@@ -1,0 +1,12 @@
+/* 
+ * Styles have been reorganized into modular CSS files:
+ * 
+ * - styles/Layout.css - App wrapper, header, footer, main content
+ * - styles/Auth.css - Login and SignUp pages
+ * - styles/Home.css - Home page specific styles
+ * - styles/CreateLeague.css - Create League page
+ * - styles/JoinLeague.css - Join League page (uses Auth.css and CreateLeague.css)
+ * - styles/LeagueSelection.css - League Selection page and League Card component
+ * 
+ * Each component now imports only the CSS it needs.
+ */
