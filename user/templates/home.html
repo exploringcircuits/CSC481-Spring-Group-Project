@@ -1,62 +1,203 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
-    />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <title>Document</title>
-  </head>
-  <body>
-    <nav class="navbar navbar-inverse">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <a class="navbar-brand" href="#">Fantasy Fanatics NBA League</a>
-        </div>
-        <ul class="nav navbar-nav">
-          <li class="active"><a href="#">Home</a></li>
-          <li class="active">
-            <a class="dropdown-toggle" data-toggle="dropdown" href="#"
-              >Players <span class="caret"></span
-            ></a>
-            <ul class="dropdown-menu">
-              <li><a href="#">Rosters</a></li>
-              <li><a href="#">Stats</a></li>
-            </ul>
-          </li>
-        </ul>
-        <ul class="nab navbar-nav navbar-right">
-<form method="POST" action="{% url 'logout' %}">
+<style>
+  /* 1. White Gradient Background & Base Layout */
+  body {
+    background: linear-gradient(135deg, #ffffff 0%, #eef2f7 100%);
+    background-attachment: fixed;
+    min-height: 100vh;
+    margin: 0;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+  }
+
+  /* 2. Interactive News Ticker (The "Carousel" feel) */
+  .ticker-wrap {
+    width: 100%;
+    overflow: hidden;
+    background-color: #1a1a1a; /* Dark sleek bar */
+    padding: 10px 0;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  }
+
+  .ticker {
+    display: flex;
+    white-space: nowrap;
+    animation: ticker-move 30s linear infinite;
+  }
+
+  .ticker-item {
+    color: #04AA6D; /* NBA Green accent */
+    font-weight: bold;
+    font-size: 14px;
+    padding: 0 40px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .ticker-item span { color: white; margin-right: 10px; }
+
+  @keyframes ticker-move {
+    0% { transform: translateX(100%); }
+    100% { transform: translateX(-100%); }
+  }
+
+  /* 3. Floating Modern Navbar */
+  .modern-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 5%;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  }
+
+  .nav-brand {
+    font-size: 20px;
+    font-weight: 800;
+    color: #1a1a1a;
+    text-decoration: none;
+    transition: 0.3s;
+  }
+
+  .nav-links { display: flex; gap: 30px; list-style: none; margin: 0; }
+  .nav-links a { 
+    text-decoration: none; 
+    color: #666; 
+    font-weight: 500;
+    transition: 0.3s;
+  }
+  .nav-links a:hover { color: #04AA6D; }
+
+  /* 4. Form Card Styling */
+  .dashboard-container {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+  }
+
+  .center {
+    background: #ffffff;
+    padding: 40px;
+    width: 100%;
+    max-width: 420px;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.06);
+    border: 1px solid #f0f0f0;
+    text-align: center;
+  }
+
+  /* Button Styles */
+  .button-group {
+    display: flex;
+    justify-content: space-between;
+    margin: 15px 0;
+  }
+
+  .btn-team {
+    flex: 1;
+    margin: 0 5px;
+    padding: 12px;
+    border: 2px solid #eee;
+    background: white;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+  }
+
+  .btn-team:hover { border-color: #04AA6D; color: #04AA6D; }
+  .btn-team.active { background: #04AA6D; color: white; border-color: #04AA6D; }
+
+  .btn-register {
+    width: 100%;
+    padding: 15px;
+    background: #1a1a1a;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 16px;
+    margin-top: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+
+  .btn-register:hover { background: #04AA6D; transform: translateY(-2px); }
+
+  .form-control-custom {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 20px;
+  }
+</style>
+
+<div class="ticker-wrap">
+  <div class="ticker">
+    <div class="ticker-item"><span>LEAGUE STATUS:</span> OPEN FOR REGISTRATION</div>
+    <div class="ticker-item"><span>TOP PERFORMER:</span> LEBRON JAMES (+45 PTS)</div>
+    <div class="ticker-item"><span>NEXT DRAFT:</span> STARTING IN 48 HOURS</div>
+    <div class="ticker-item"><span>LATEST NEWS:</span> TRADE WINDOW CLOSING SOON</div>
+  </div>
+</div>
+
+<nav class="modern-nav">
+  <a href="#" class="nav-brand">FANTASY FANATICS</a>
+ 
+  <form method="POST" action="{% url 'logout' %}">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger btn-sm">Logout</button>
+  </form>
+</nav>
+
+<div class="dashboard-container">
+  <h3 style="margin-bottom: 30px; font-weight: 300;">Hi <strong>{{user.username}}</strong>, let's get started.</h3>
+  
+  <div class="center">
+    <form method="POST" action="{% url 'league-create' %}">
       {% csrf_token %}
-      <button type="submit" class="btn btn-danger">Logout</button>
+      
+      <label style="display:block; text-align:left; font-size:12px; color:#999; text-transform:uppercase;">Team Name</label>
+      <input type="text" name="team_name" class="form-control-custom" placeholder="Enter your team name..." required>
+
+      <label style="display:block; text-align:left; font-size:12px; color:#999; text-transform:uppercase;">League Name</label>
+      <input type="text" name="name" class="form-control-custom" placeholder="The Dream Team..." required>
+
+      <label style="display:block; text-align:left; font-size:12px; color:#999; text-transform:uppercase;">Number of Teams</label>
+      <div class="button-group">
+        <button type="button" class="btn-team" onclick="selectTeams(this, 2)">2</button>
+        <button type="button" class="btn-team" onclick="selectTeams(this, 4)">4</button>
+        <button type="button" class="btn-team" onclick="selectTeams(this, 6)">6</button>
+      </div>
+      <input type="hidden" id="max_teams" name="max_teams" value="2">
+
+      <div style="margin-top: 25px;">
+        <label style="display:block; text-align:left; font-size:12px; color:#999; text-transform:uppercase;">Scoring Model</label>
+        <div id="h2h-button" class="LargeRadioControl__Contents" onclick="this.classList.toggle('LargeRadioControl__Selected')" style="border: 1px solid #ddd; padding: 15px; border-radius: 8px; cursor: pointer; margin-top: 5px;">
+          H2H Points
+        </div>
+      </div>
+
+      <button type="submit" class="btn-register">Create League</button>
     </form>
-          </ul>
-      </div>
-    </nav>
-    <h3>Hi {{user.username}}, Welcome to your Fantasy Fanatics dashboard.</h3>
-    
-    <div class = "container-fluid">
-      <!--Outer contain holding the rest -->
+  </div>
+</div>
 
-      <div>
-        <!--Div for user form(Team name)-->
-        <form>
-          <label for="leaguename">League Name</label>
-          <input type="text" id="leaguename" name="leaguename"/>
-          <label for="numteams">Number of Teams</label>
-
-        </form>
-      </div>
-      <!--# of teams selection-->
-
-    </div>
-
-    <div>
-      <!--Form for league scoring options-->
-    </div>
-
-</html>
+<script>
+  function selectTeams(btn, num) {
+    // Remove active class from all buttons
+    document.querySelectorAll('.btn-team').forEach(b => b.classList.remove('active'));
+    // Add to clicked button
+    btn.classList.add('active');
+    document.getElementById("max_teams").value = num;
+  }
+</script>
