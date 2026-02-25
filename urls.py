@@ -26,7 +26,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('user/', include('user.urls')),
     path('user/', include('django.contrib.auth.urls')),
-    path("api/league/", include("league.urls")),
+    path("league/", include("league.urls")),
    # path("<str:join_code>/", LeagueDashboardView.as_view(), name="league-dashboard"),
 ]
  
