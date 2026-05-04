@@ -1,46 +1,52 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import Layout from "./components/Layout";
-import Login from "./pages/Login";
-import SignUp from "./pages/SignUp";
-import Home from "./pages/Home";
-import JoinLeague from "./pages/JoinLeague";
-import CreateLeague from "./pages/CreateLeague";
-import LeagueSelection from "./pages/LeagueSelection";
-import LeagueHome from "./pages/LeagueHome";
-import Players from "./pages/Players";
-import DraftSettings from "./pages/DraftSettings";
-import LeagueMembers from "./pages/LeagueMembers";
-import Draft from "./pages/Draft";
-import MyTeam from "./pages/MyTeam";
-import ProtectedRoute from "./components/ProtectedRoute";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
+import { Toaster } from "@/components/ui/sonner"
+
+import { AuthProvider } from "@/contexts/AuthContext"
+import { Layout } from "@/components/layout/Layout"
+import { ProtectedRoute } from "@/components/ProtectedRoute"
+
+import { LoginPage } from "@/pages/LoginPage"
+import { SignUpPage } from "@/pages/SignUpPage"
+import { LeagueSelectionPage } from "@/pages/LeagueSelectionPage"
+import { LeagueHomePage } from "@/pages/LeagueHomePage"
+import { DraftPage } from "@/pages/DraftPage"
+import { MyTeamPage } from "@/pages/MyTeamPage"
+import { StandingsPage } from "@/pages/StandingsPage"
+import { BracketPage } from "@/pages/BracketPage"
+import { TradesPage } from "@/pages/TradesPage"
+import { PlayersPage } from "@/pages/PlayersPage"
+import { AdminPanelPage } from "@/pages/AdminPanelPage"
 
 function App() {
-    return (
-        <BrowserRouter>
-            <Layout>
-                <Routes>
-                    {/* Public routes — no token required */}
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/signup" element={<SignUp />} />
-                    <Route path="/home" element={<Home />} />
-                    <Route path="/players" element={<Players />} />
+  return (
+    <AuthProvider>
+      <BrowserRouter>
+        <Layout>
+          <Routes>
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/signup" element={<SignUpPage />} />
 
-                    {/* Protected routes — redirects to /login if no token */}
-                    <Route path="/join-league" element={<ProtectedRoute><JoinLeague /></ProtectedRoute>} />
-                    <Route path="/create-league" element={<ProtectedRoute><CreateLeague /></ProtectedRoute>} />
-                    <Route path="/league-selection" element={<ProtectedRoute><LeagueSelection /></ProtectedRoute>} />
-                    <Route path="/league/:leagueId" element={<ProtectedRoute><LeagueHome /></ProtectedRoute>} />
-                    <Route path="/league/:leagueId/draft-settings" element={<ProtectedRoute><DraftSettings /></ProtectedRoute>} />
-                    <Route path="/league/:leagueId/draft" element={<ProtectedRoute><Draft /></ProtectedRoute>} />
-                    <Route path="/league/:leagueId/members" element={<ProtectedRoute><LeagueMembers /></ProtectedRoute>} />
-                    <Route path="/league/:leagueId/my-team" element={<ProtectedRoute><MyTeam /></ProtectedRoute>} />
-                    <Route path="/league/:leagueId/team/:teamId" element={<ProtectedRoute><MyTeam /></ProtectedRoute>} />
+            <Route element={<ProtectedRoute />}>
+              <Route path="/leagues" element={<LeagueSelectionPage />} />
+              <Route path="/leagues/:leagueId" element={<LeagueHomePage />} />
+              <Route path="/leagues/:leagueId/draft" element={<DraftPage />} />
+              <Route path="/leagues/:leagueId/team/:teamId" element={<MyTeamPage />} />
+              <Route path="/leagues/:leagueId/team" element={<MyTeamPage />} />
+              <Route path="/leagues/:leagueId/standings" element={<StandingsPage />} />
+              <Route path="/leagues/:leagueId/bracket" element={<BracketPage />} />
+              <Route path="/leagues/:leagueId/trades" element={<TradesPage />} />
+              <Route path="/leagues/:leagueId/players" element={<PlayersPage />} />
+              <Route path="/admin" element={<AdminPanelPage />} />
+            </Route>
 
-                    <Route path="/" element={<Navigate to="/login" />} />
-                </Routes>
-            </Layout>
-        </BrowserRouter>
-    );
+            <Route path="/" element={<Navigate to="/leagues" replace />} />
+            <Route path="*" element={<Navigate to="/leagues" replace />} />
+          </Routes>
+        </Layout>
+      </BrowserRouter>
+      <Toaster richColors position="top-right" />
+    </AuthProvider>
+  )
 }
 
-export default App;
+export default App

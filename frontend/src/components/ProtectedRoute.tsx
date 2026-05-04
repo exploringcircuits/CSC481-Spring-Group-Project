@@ -1,18 +1,22 @@
-// Redirects unauthenticated users to /login before they can access protected pages
-import { Navigate } from 'react-router-dom';
-import { isAuthenticated } from '../services/auth';
+import { Navigate, Outlet, useLocation } from "react-router-dom"
 
-interface Props {
-    children: React.ReactNode;
+import { useAuth } from "@/hooks/useAuth"
+
+export function ProtectedRoute() {
+  const { isAuthenticated, isLoading } = useAuth()
+  const location = useLocation()
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center py-24 text-muted-foreground">
+        Loading…
+      </div>
+    )
+  }
+
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace state={{ from: location }} />
+  }
+
+  return <Outlet />
 }
-
-function ProtectedRoute({ children }: Props) {
-    if (!isAuthenticated()) {
-        // User has no token — send them to login
-        return <Navigate to="/login" replace />;
-    }
-
-    return <>{children}</>;
-}
-
-export default ProtectedRoute;
