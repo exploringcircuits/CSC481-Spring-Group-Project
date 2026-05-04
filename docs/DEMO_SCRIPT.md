@@ -5,9 +5,23 @@ Click-by-click guide for presenting. Total runtime when rehearsed is about
 
 ## Before you start
 
-1. Run `start-app.ps1`. Wait for the browser to open `localhost:5173` and
-   see the **Sign in** card.
-2. The admin credentials are `admin@demo.local` / `demoadmin`.
+Make sure both dev servers are running. From two terminals (per the README's
+"Running the app" section):
+
+```bash
+# Terminal 1
+cd backend && python manage.py runserver
+
+# Terminal 2
+cd frontend && npm run dev
+```
+
+Open <http://localhost:5173>. You should see the **Sign in** card.
+
+Admin credentials: `admin@demo.local` / `demoadmin`.
+
+If this is a brand-new checkout, run `python manage.py bootstrap_demo` from
+`backend/` first to set up the database and player data.
 
 ## 1. Sign in (10s)
 
@@ -112,11 +126,11 @@ Click **My Team** in the league nav. The new player is on the roster.
 
 ## If anything goes sideways
 
-- **Pages look unstyled** → the Vite dev server fell over. `Ctrl+C` and re-run
-  `start-app.ps1 -SkipInstall`.
-- **Login fails** → run `python manage.py seed_admin_user` from the backend
-  dir to recreate the admin user with the known password.
-- **Stats look wrong** → run `start-app.ps1 -SeedFreshDemo` to regenerate
-  the per-day stat lines from a fresh seed.
+- **Pages look unstyled** → the Vite dev server fell over. Stop it (Ctrl+C
+  in terminal 2) and re-run `npm run dev`.
+- **Login fails** → run `python manage.py seed_admin_user` from `backend/`
+  to recreate the admin user with the known password.
+- **Stats look wrong** → run `python manage.py bootstrap_demo --regenerate-stats`
+  from `backend/` to regenerate the per-day stat lines from a fresh seed.
 - **Want to start over mid-demo** → just click **Reset everything** then
   **Seed demo league**. Total reset takes 2 seconds.

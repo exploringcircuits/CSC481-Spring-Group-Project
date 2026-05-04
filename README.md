@@ -2,7 +2,7 @@
 
 A demo-grade fantasy-basketball web app. Single-league, head-to-head points
 scoring, snake draft, weekly matchups, configurable playoff bracket, trade
-flow. Built solo over a marathon session as a presentation deliverable.
+flow.
 
 ```
 React 19 + TypeScript + Vite + Tailwind v4 + shadcn/ui
@@ -36,24 +36,61 @@ Django 6 + DRF + SQLite + SimpleJWT
 
 - Python 3.10+ on PATH
 - Node.js 20+ (with npm) on PATH
-- Windows PowerShell (the launcher is `start-app.ps1`)
 
-## Quick start
+## One-time setup
 
-```powershell
-.\start-app.ps1
+From the project root.
+
+```bash
+# 1. Create + activate a virtual environment
+python -m venv .venv
+
+# Windows PowerShell:
+.\.venv\Scripts\Activate.ps1
+# Windows cmd.exe:
+.venv\Scripts\activate.bat
+# macOS / Linux:
+source .venv/bin/activate
+
+# 2. Install backend Python deps
+pip install -r backend/requirements.txt
+
+# 3. Install frontend Node deps
+cd frontend
+npm install
+cd ..
+
+# 4. Bootstrap the database + demo data
+cd backend
+python manage.py bootstrap_demo
+cd ..
 ```
 
-First run: creates `.venv`, installs Python + Node deps, runs migrations,
-ensures the admin user exists, scrapes basketball-reference once (cached
-locally), generates 8 weeks of player game stats, then boots both servers.
-Subsequent runs are fast (`-SkipInstall` skips dep install entirely).
+`bootstrap_demo` runs migrations, ensures the admin user, scrapes NBA
+player data (cached locally so subsequent runs are offline), and generates
+8 weeks of per-day stat lines. About 1 minute on the first run; near-instant
+on re-runs (the heavy stats step is skipped unless you pass
+`--regenerate-stats`).
 
-To regenerate the per-day stats fixture (e.g. fresh seed for a new demo):
+## Running the app
 
-```powershell
-.\start-app.ps1 -SeedFreshDemo
+Two terminals.
+
+**Terminal 1 — backend (Django on port 8000):**
+
+```bash
+cd backend
+python manage.py runserver
 ```
+
+**Terminal 2 — frontend (Vite on port 5173):**
+
+```bash
+cd frontend
+npm run dev
+```
+
+Then open <http://localhost:5173> in your browser.
 
 Default credentials:
 
@@ -62,14 +99,6 @@ Default credentials:
 | Site admin   | admin@demo.local   | demoadmin   |
 
 You can also create regular accounts through the **Sign up** page.
-
-## URLs
-
-- Frontend: <http://localhost:5173>
-- Backend: <http://127.0.0.1:8000>
-- Django admin: <http://127.0.0.1:8000/admin/>
-- API root (auth endpoints): `/api/auth/` ·
-  fantasy: `/api/leagues/` `/api/teams/` `/api/players/` `/api/admin/`
 
 ## Demo flow
 
@@ -87,6 +116,20 @@ presentation script. The short version:
 8. Click **Propose example trade** → switch to the **Trades** tab → accept
    the incoming trade.
 
+## Useful management commands
+
+All run from `backend/` with the venv active.
+
+| Command | What it does |
+| --- | --- |
+| `python manage.py bootstrap_demo` | One-shot setup (idempotent) |
+| `python manage.py bootstrap_demo --regenerate-stats` | Re-run + wipe and regenerate stat lines |
+| `python manage.py sync_nba_data --refresh` | Re-fetch the basketball-reference page (otherwise cached) |
+| `python manage.py generate_player_game_stats --weeks 8 --seed 42 --start-date 2026-03-10 --clear` | Manually regenerate stats with custom params |
+| `python manage.py seed_admin_user` | Recreate `admin@demo.local` (idempotent) |
+| `python manage.py createsuperuser` | Create a custom admin user (Django built-in) |
+| `python manage.py test accounts` | Run the auth-flow tests |
+
 ## Repo layout
 
 ```
@@ -94,14 +137,15 @@ backend/
   config/             Django project (settings, urls, asgi/wsgi)
   accounts/           Custom User (email-as-username) + auth views
   fantasy/            Domain models, scoring, schedule, views, admin panel
-    models.py         15 models in one file (Player, League, Team, Week, ...)
+    models.py         15 models (Player, League, Team, Week, ...)
     scoring.py        Yahoo-flavored H2H Points, settle_week, refresh_standings
     schedule.py       Round-robin generator, playoff bracket builder, snake pointer
     permissions.py    IsLeagueMember / IsLeagueCommissioner / IsSiteAdmin
     views.py          Read-side + member-side API endpoints
     admin_views.py    Demo control panel endpoints (is_staff only)
-    serializers.py    DRF serializers (~16 of them)
+    serializers.py    DRF serializers
     management/commands/
+      bootstrap_demo.py
       sync_nba_data.py
       generate_player_game_stats.py
       seed_admin_user.py
@@ -113,7 +157,7 @@ frontend/
     pages/            One file per route (10 demo pages)
     components/
       layout/         Top nav shell
-      ui/             shadcn/ui primitives (~15)
+      ui/             shadcn/ui primitives
       ProtectedRoute.tsx
     services/         apiFetch + per-domain client (auth, leagues, teams,
                       draft, trades, players, admin)
@@ -122,7 +166,6 @@ frontend/
     lib/              storage helpers, cn() util
     types/            shared TS types
 
-start-app.ps1         Windows launcher (creates venv, installs, ingests, runs)
 README.md             You are here
 docs/DEMO_SCRIPT.md   Click-by-click presentation script
 ```
