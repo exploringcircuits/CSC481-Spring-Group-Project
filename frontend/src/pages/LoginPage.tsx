@@ -13,8 +13,12 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { Separator } from "@/components/ui/separator"
 import { useAuth } from "@/hooks/useAuth"
 import { ApiError } from "@/services/api"
+
+const DEMO_ADMIN_EMAIL = "admin@demo.local"
+const DEMO_ADMIN_PASSWORD = "demoadmin"
 
 export function LoginPage() {
   const navigate = useNavigate()
@@ -27,15 +31,10 @@ export function LoginPage() {
 
   const fromPath = (location.state as { from?: { pathname?: string } } | null)?.from?.pathname
 
-  async function onSubmit(e: React.FormEvent) {
-    e.preventDefault()
-    if (!email || !password) {
-      toast.error("Email and password are required.")
-      return
-    }
+  async function signIn(emailToUse: string, passwordToUse: string) {
     setSubmitting(true)
     try {
-      await login({ email, password })
+      await login({ email: emailToUse, password: passwordToUse })
       toast.success("Signed in.")
       navigate(fromPath || "/leagues", { replace: true })
     } catch (err) {
@@ -44,6 +43,26 @@ export function LoginPage() {
     } finally {
       setSubmitting(false)
     }
+  }
+
+  async function onSubmit(e: React.FormEvent) {
+    e.preventDefault()
+    if (!email || !password) {
+      toast.error("Email and password are required.")
+      return
+    }
+    await signIn(email, password)
+  }
+
+  function fillDemoAdmin() {
+    setEmail(DEMO_ADMIN_EMAIL)
+    setPassword(DEMO_ADMIN_PASSWORD)
+  }
+
+  async function signInAsDemoAdmin() {
+    setEmail(DEMO_ADMIN_EMAIL)
+    setPassword(DEMO_ADMIN_PASSWORD)
+    await signIn(DEMO_ADMIN_EMAIL, DEMO_ADMIN_PASSWORD)
   }
 
   return (
@@ -82,6 +101,40 @@ export function LoginPage() {
           <Button type="submit" className="w-full" disabled={submitting}>
             {submitting ? "Signing in…" : "Sign in"}
           </Button>
+
+          <div className="flex items-center w-full gap-3">
+            <Separator className="flex-1" />
+            <span className="text-xs uppercase tracking-wider text-muted-foreground">
+              demo
+            </span>
+            <Separator className="flex-1" />
+          </div>
+
+          <div className="flex w-full gap-2">
+            <Button
+              type="button"
+              variant="outline"
+              className="flex-1"
+              onClick={fillDemoAdmin}
+              disabled={submitting}
+            >
+              Fill admin credentials
+            </Button>
+            <Button
+              type="button"
+              variant="secondary"
+              className="flex-1"
+              onClick={signInAsDemoAdmin}
+              disabled={submitting}
+            >
+              Sign in as admin
+            </Button>
+          </div>
+          <p className="text-xs text-muted-foreground text-center">
+            Uses <code className="font-mono">{DEMO_ADMIN_EMAIL}</code>. Make sure
+            <code className="ml-1 font-mono">manage.py seed_admin_user</code> has run.
+          </p>
+
           <p className="text-sm text-muted-foreground text-center">
             New here?{" "}
             <Link to="/signup" className="text-foreground font-medium hover:underline">
