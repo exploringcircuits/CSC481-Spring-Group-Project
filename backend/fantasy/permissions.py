@@ -15,6 +15,9 @@ class IsSiteAdmin(BasePermission):
 class IsLeagueMember(BasePermission):
     """Authenticated user is a member of the league referenced by the URL.
 
+    Site admins (is_staff) bypass this check so the demo presenter can view
+    every league regardless of membership.
+
     Looks for `league_id` in URL kwargs first, then falls back to the
     object's `.league` attribute when checking object-level permission.
     """
@@ -22,6 +25,8 @@ class IsLeagueMember(BasePermission):
     def has_permission(self, request, view):
         if not request.user or not request.user.is_authenticated:
             return False
+        if request.user.is_staff:
+            return True
         league_id = view.kwargs.get("league_id") or view.kwargs.get("pk")
         if league_id is None:
             return True  # rely on object-level check
@@ -30,6 +35,8 @@ class IsLeagueMember(BasePermission):
     def has_object_permission(self, request, view, obj):
         if not request.user or not request.user.is_authenticated:
             return False
+        if request.user.is_staff:
+            return True
         league = _resolve_league(obj)
         if league is None:
             return False
