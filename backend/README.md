@@ -46,16 +46,32 @@ backend/
 
 ## Running
 
-From the project root, with the venv active and deps installed (see the
-top-level [`README.md`](../README.md) for the one-time setup):
+The backend lives behind a Python virtual environment at `<repo>/.venv/`.
+Activate it in every new shell before running `manage.py` or `pip`. If the
+venv doesn't exist yet, create it first.
+
+**Windows PowerShell** (from the project root):
+
+```powershell
+if (-not (Test-Path .venv)) { python -m venv .venv }
+.\.venv\Scripts\Activate.ps1
+cd backend
+python manage.py runserver
+```
+
+**macOS / Linux** (from the project root):
 
 ```bash
+[ -d .venv ] || python -m venv .venv
+source .venv/bin/activate
 cd backend
 python manage.py runserver
 ```
 
 Default URL: <http://127.0.0.1:8000>. Combine with `npm run dev` from
-`frontend/` (in another terminal) for the full app.
+`frontend/` (in another terminal) for the full app. See the top-level
+[`README.md`](../README.md) for the full one-time setup (pip install,
+npm install, `bootstrap_demo`).
 
 ## Data model
 

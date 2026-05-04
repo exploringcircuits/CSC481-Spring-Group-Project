@@ -39,31 +39,45 @@ Django 6 + DRF + SQLite + SimpleJWT
 
 ## One-time setup
 
-From the project root.
+From the project root. If `.venv/` doesn't exist yet, the first command
+creates it; if it does, that command is a no-op.
 
-```bash
-# 1. Create + activate a virtual environment
-python -m venv .venv
+**Windows PowerShell:**
 
-# Windows PowerShell:
+```powershell
+# 1. Create the virtual environment (skip if .venv already exists)
+if (-not (Test-Path .venv)) { python -m venv .venv }
+
+# 2. Activate it (re-run in every new shell)
 .\.venv\Scripts\Activate.ps1
-# Windows cmd.exe:
-.venv\Scripts\activate.bat
-# macOS / Linux:
-source .venv/bin/activate
 
-# 2. Install backend Python deps
+# 3. Install backend Python deps
 pip install -r backend/requirements.txt
 
-# 3. Install frontend Node deps
-cd frontend
-npm install
-cd ..
+# 4. Install frontend Node deps
+cd frontend; npm install; cd ..
 
-# 4. Bootstrap the database + demo data
-cd backend
-python manage.py bootstrap_demo
-cd ..
+# 5. Bootstrap the database + demo data
+cd backend; python manage.py bootstrap_demo; cd ..
+```
+
+**macOS / Linux (bash or zsh):**
+
+```bash
+# 1. Create the virtual environment (skip if .venv already exists)
+[ -d .venv ] || python -m venv .venv
+
+# 2. Activate it (re-run in every new shell)
+source .venv/bin/activate
+
+# 3. Install backend Python deps
+pip install -r backend/requirements.txt
+
+# 4. Install frontend Node deps
+cd frontend && npm install && cd ..
+
+# 5. Bootstrap the database + demo data
+cd backend && python manage.py bootstrap_demo && cd ..
 ```
 
 `bootstrap_demo` runs migrations, ensures the admin user, scrapes NBA
@@ -74,11 +88,24 @@ on re-runs (the heavy stats step is skipped unless you pass
 
 ## Running the app
 
-Two terminals.
+Two terminals. Each terminal needs the venv activated (the activation only
+sticks within the shell session that ran it). The Python deps are only
+needed in the backend terminal — the frontend terminal can skip activation.
 
 **Terminal 1 — backend (Django on port 8000):**
 
+```powershell
+# Windows PowerShell — activate venv then run
+if (-not (Test-Path .venv)) { python -m venv .venv }   # create if missing
+.\.venv\Scripts\Activate.ps1
+cd backend
+python manage.py runserver
+```
+
 ```bash
+# macOS / Linux
+[ -d .venv ] || python -m venv .venv
+source .venv/bin/activate
 cd backend
 python manage.py runserver
 ```
