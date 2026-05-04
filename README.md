@@ -7,7 +7,7 @@ flow.
 ```
 React 19 + TypeScript + Vite + Tailwind v4 + shadcn/ui
         │
-        ▼  /api/*  (Vite dev proxy → 127.0.0.1:8000)
+        ▼  /api/*  (Vite dev proxy → 127.0.0.1:8001)
         │
 Django 6 + DRF + SQLite + SimpleJWT
         │
@@ -92,14 +92,14 @@ Two terminals. Each terminal needs the venv activated (the activation only
 sticks within the shell session that ran it). The Python deps are only
 needed in the backend terminal — the frontend terminal can skip activation.
 
-**Terminal 1 — backend (Django on port 8000):**
+**Terminal 1 — backend (Django on port 8001):**
 
 ```powershell
 # Windows PowerShell — activate venv then run
 if (-not (Test-Path .venv)) { python -m venv .venv }   # create if missing
 .\.venv\Scripts\Activate.ps1
 cd backend
-python manage.py runserver
+python manage.py runserver 8001
 ```
 
 ```bash
@@ -107,8 +107,15 @@ python manage.py runserver
 [ -d .venv ] || python -m venv .venv
 source .venv/bin/activate
 cd backend
-python manage.py runserver
+python manage.py runserver 8001
 ```
+
+> Why 8001? The default Django port is 8000, but that port is reserved here
+> for an unrelated project on this machine. The Vite dev proxy is configured
+> to forward `/api/*` to 8001. To use a different port, set the
+> `VITE_BACKEND_URL` env var before `npm run dev`
+> (e.g. `VITE_BACKEND_URL=http://127.0.0.1:9000 npm run dev`) and pass the
+> matching port to `runserver`.
 
 **Terminal 2 — frontend (Vite on port 5173):**
 

@@ -12,7 +12,8 @@ export default defineConfig({
   },
   server: {
     proxy: {
-      '/api': 'http://127.0.0.1:8000',
+      // Backend default: 127.0.0.1:8001. Override with VITE_BACKEND_URL if needed.
+      '/api': process.env.VITE_BACKEND_URL ?? 'http://127.0.0.1:8001',
     },
   },
 })

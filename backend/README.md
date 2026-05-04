@@ -56,7 +56,7 @@ venv doesn't exist yet, create it first.
 if (-not (Test-Path .venv)) { python -m venv .venv }
 .\.venv\Scripts\Activate.ps1
 cd backend
-python manage.py runserver
+python manage.py runserver 8001
 ```
 
 **macOS / Linux** (from the project root):
@@ -65,13 +65,18 @@ python manage.py runserver
 [ -d .venv ] || python -m venv .venv
 source .venv/bin/activate
 cd backend
-python manage.py runserver
+python manage.py runserver 8001
 ```
 
-Default URL: <http://127.0.0.1:8000>. Combine with `npm run dev` from
-`frontend/` (in another terminal) for the full app. See the top-level
-[`README.md`](../README.md) for the full one-time setup (pip install,
-npm install, `bootstrap_demo`).
+Default URL: <http://127.0.0.1:8001>. The Vite dev proxy is wired to
+forward `/api/*` to this port. (Port 8000 is reserved on this machine for
+an unrelated project — that's why we use 8001.) To use a different port,
+runserver on it and set `VITE_BACKEND_URL=http://127.0.0.1:<port>` before
+`npm run dev`.
+
+Combine with `npm run dev` from `frontend/` (in another terminal) for the
+full app. See the top-level [`README.md`](../README.md) for the full
+one-time setup (pip install, npm install, `bootstrap_demo`).
 
 ## Data model
 

@@ -58,7 +58,7 @@ class Command(BaseCommand):
 
         self.stdout.write(self.style.SUCCESS("\nReady to roll."))
         self.stdout.write("Start the dev servers in two terminals:")
-        self.stdout.write("  Backend:   python manage.py runserver        (from backend/)")
+        self.stdout.write("  Backend:   python manage.py runserver 8001   (from backend/)")
         self.stdout.write("  Frontend:  npm run dev                       (from frontend/)")
         self.stdout.write("\nThen open http://localhost:5173 and sign in:")
         self.stdout.write("  admin@demo.local / demoadmin")

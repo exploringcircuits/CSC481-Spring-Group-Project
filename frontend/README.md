@@ -64,7 +64,7 @@ npm install     # one-time
 npm run dev     # dev server on http://localhost:5173
 ```
 
-Vite dev-proxies `/api/*` to `http://127.0.0.1:8000` (the Django backend), so
+Vite dev-proxies `/api/*` to `http://127.0.0.1:8001` (the Django backend), so
 make sure that's running too. From the project root, the standard workflow is
 two terminals — see the top-level [`README.md`](../README.md) for full setup.
 
@@ -154,7 +154,7 @@ Runs `tsc -b` (strict mode + `noUnusedLocals` + `noUnusedParameters`) then
 
 | Env | URL |
 |---|---|
-| Dev (Vite proxy) | `http://localhost:5173/api/*` → `http://127.0.0.1:8000/api/*` |
+| Dev (Vite proxy) | `http://localhost:5173/api/*` → `http://127.0.0.1:8001/api/*` (override with `VITE_BACKEND_URL`) |
 | Prod | Set `VITE_API_URL` to the deployed backend's origin at build time. |
 
 In dev the proxy means CORS isn't on the path; same-origin all the way. The
