@@ -1,0 +1,38 @@
+/* Stat Mode Toggle Styles */
+
+.stat-mode-toggle {
+    display: flex;
+    gap: 0;
+    border: 1px solid #b4b4b4;
+    border-radius: 0.25rem;
+    overflow: hidden;
+}
+
+.toggle-btn {
+    background: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: #495057;
+    font-weight: bold;
+    transition: all 0.2s ease;
+    flex: 1;
+    opacity: 0.5;
+}
+
+.toggle-btn:not(:last-child) {
+    border-right: 1px solid #b4b4b4;
+}
+
+.toggle-btn.active {
+    opacity: 1;
+    background: white;
+    color: transparent;
+    background-image: linear-gradient(65deg, #6a1523, #ffc987);
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+    border-bottom: 2px solid;
+    border-image: linear-gradient(65deg, #6a1523, #ffc987) 1;
+}

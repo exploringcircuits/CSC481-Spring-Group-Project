@@ -1,0 +1,64 @@
+.stat-qualifier-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    position: relative;
+}
+
+.stat-qualifier-label {
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.9rem;
+    color: black;
+    margin: 0;
+    padding: 0;
+}
+
+.stat-qualifier-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.stat-qualifier-slider-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: opacity 0.2s;
+}
+
+.stat-qualifier-slider-group.disabled {
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+.stat-qualifier-slider-group:not(.disabled) {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.stat-qualifier-at-least-label {
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.9rem;
+    color: black;
+    white-space: nowrap;
+}
+
+.stat-qualifier-slider {
+    width: 120px;
+    height: 4px;
+    cursor: pointer;
+    accent-color: #b4b4b4;
+}
+
+.stat-qualifier-slider:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.stat-qualifier-value {
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.9rem;
+    color: black;
+    min-width: 35px;
+    text-align: right;
+}

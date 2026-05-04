@@ -1,0 +1,46 @@
+.toggle-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.toggle-label {
+    font-size: 0.85rem;
+    font-weight: normal;
+    color: #495057;
+    margin: 0;
+    white-space: nowrap;
+}
+
+.toggle-button {
+    background: none;
+    border: none;
+    width: 2.5rem;
+    height: 1.25rem;
+    padding: 0.125rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    background-color: #e9ecef;
+    border-radius: 2rem;
+    transition: background-color 0.2s ease;
+    position: relative;
+}
+
+.toggle-button.active {
+    background: linear-gradient(65deg, #6a1523, #ffc987);
+}
+
+.toggle-switch {
+    width: 1rem;
+    height: 1rem;
+    background-color: white;
+    border-radius: 50%;
+    transition: transform 0.2s ease;
+    position: absolute;
+    left: 0.125rem;
+}
+
+.toggle-switch.on {
+    transform: translateX(1.25rem);
+}

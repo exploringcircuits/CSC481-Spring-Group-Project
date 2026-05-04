@@ -1,0 +1,254 @@
+.league-members-page {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem 4rem;
+    font-family: "Poppins", sans-serif;
+}
+
+.league-members-heading {
+    margin: 0 0 0.6rem;
+    color: white;
+    text-align: center;
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.league-members-card {
+    background: #f8f8f8;
+    box-shadow: 12px 12px 24px rgba(0, 0, 0, 0.75);
+    padding: 1rem;
+    color: #1a1a1a;
+}
+
+.league-members-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.league-members-title-row h3 {
+    margin: 0;
+    font-size: 1.15rem;
+    font-weight: 500;
+}
+
+.members-outline-button {
+    border: 1px solid #2f69d8;
+    background: white;
+    color: #2f69d8;
+    border-radius: 999px;
+    padding: 0.5rem 1rem;
+    font-weight: 600;
+    font-family: "Poppins", sans-serif;
+}
+
+.invite-link-row {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 0.75rem;
+    align-items: center;
+    margin-bottom: 1.2rem;
+}
+
+.invite-link-row input {
+    border: 1px solid #bbb;
+    background: white;
+    padding: 0.55rem 0.7rem;
+    font-family: "Poppins", sans-serif;
+}
+
+.link-button {
+    border: none;
+    background: transparent;
+    color: #2f69d8;
+    font-weight: 500;
+    cursor: pointer;
+    font-family: "Poppins", sans-serif;
+}
+
+.members-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+    margin-bottom: 1.4rem;
+}
+
+.members-table th,
+.members-table td {
+    border-top: 1px solid #d7d7d7;
+    border-bottom: 1px solid #d7d7d7;
+    text-align: left;
+    padding: 0.65rem 0.5rem;
+}
+
+.members-table th {
+    font-size: 0.84rem;
+    color: #111;
+}
+
+.members-table td a {
+    color: #0063d1;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.members-table td input {
+    border: 1px solid #c4c4c4;
+    background: white;
+    padding: 0.4rem 0.6rem;
+    border-radius: 4px;
+    max-width: 170px;
+}
+
+.invite-options {
+    margin: 0 0 1.2rem;
+}
+
+.invite-options--disabled {
+    opacity: 0.62;
+}
+
+.invite-options h4 {
+    margin: 0 0 0.6rem;
+    font-size: 1.95rem;
+    font-weight: 600;
+    color: #111;
+    border-top: 1px solid #d7d7d7;
+    padding-top: 0.9rem;
+}
+
+.invite-options-grid {
+    display: grid;
+    grid-template-columns: 380px 1fr;
+    border-top: 1px solid #e2e2e2;
+}
+
+.invite-options-label {
+    padding: 0.75rem 0.8rem;
+    color: #5f5f5f;
+    border-right: 1px solid #e2e2e2;
+}
+
+.invite-options-controls {
+    padding: 0.75rem 0.9rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.invite-options-controls label {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: #5f5f5f;
+}
+
+.invite-options-controls input[type="radio"] {
+    width: 22px;
+    height: 22px;
+    accent-color: #0b66cf;
+}
+
+.invite-options--disabled input,
+.invite-options--disabled label {
+    cursor: not-allowed;
+}
+
+.toggle-row {
+    min-height: 2rem;
+}
+
+.toggle-row input[type="checkbox"] {
+    width: 52px;
+    height: 28px;
+    border-radius: 999px;
+}
+
+.members-error {
+    padding: 0.7rem 0.8rem;
+    border: 1px solid #f2c7c7;
+    background: #fff3f3;
+    color: #a33;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+}
+
+.members-footer-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.members-disabled-button,
+.members-cancel-button {
+    border-radius: 999px;
+    padding: 0.55rem 1.3rem;
+    border: 1px solid #d0d0d0;
+    font-family: "Poppins", sans-serif;
+    font-weight: 600;
+}
+
+.members-disabled-button {
+    color: #c0c0c0;
+    background: #f6f6f6;
+}
+
+.members-cancel-button {
+    color: #9b9b9b;
+    background: white;
+    cursor: pointer;
+}
+
+.league-members-page .switch-league-button {
+    position: fixed;
+    bottom: 2rem;
+    left: 1rem;
+    background: none;
+    border: none;
+    font-family: "Poppins", sans-serif;
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+.league-members-page .switch-league-button:hover {
+    opacity: 0.8;
+}
+
+@media (max-width: 900px) {
+    .invite-link-row {
+        grid-template-columns: 1fr;
+        align-items: stretch;
+    }
+
+    .invite-options-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .invite-options-label {
+        border-right: none;
+    }
+
+    .members-table {
+        display: block;
+        overflow-x: auto;
+    }
+
+    .members-footer-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .league-members-page .switch-league-button {
+        position: static;
+        width: 100%;
+        margin-top: 1.5rem;
+        text-align: left;
+    }
+}

@@ -1,0 +1,35 @@
+/* Home page */
+.centered-link {
+    font-size: 1rem;
+    color: #38b6ff;
+    text-decoration: underline;
+    text-align: center;
+    cursor: pointer;
+    display: block;
+    margin-top: -2rem;
+}
+
+.centered-link:hover {
+    opacity: 0.8;
+}
+
+.button-container {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.league-button {
+    border: none;
+    background: linear-gradient(65deg, #6a1523, #ffc987);
+    color: white;
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    font-family: 'Poppins', sans-serif;
+    cursor: pointer;
+    flex: 1;
+}
+
+.league-button:hover {
+    opacity: 0.9;
+}

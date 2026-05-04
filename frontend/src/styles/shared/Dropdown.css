@@ -1,0 +1,86 @@
+.dropdown-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    position: relative;
+}
+
+.dropdown-label {
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.9rem;
+    color: black;
+    margin: 0;
+    padding: 0;
+}
+
+.dropdown {
+    position: relative;
+}
+
+.dropdown-button {
+    background-color: #b4b4b4;
+    border: none;
+    padding: 0.5rem 0.75rem;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.85rem;
+    color: black;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-width: 150px;
+    width: 100%;
+    box-sizing: border-box;
+    transition: opacity 0.2s ease;
+}
+
+.dropdown-button:hover:not(:disabled) {
+    opacity: 0.9;
+}
+
+.dropdown-button:disabled {
+    cursor: not-allowed;
+}
+
+.dropdown-button .dropdown-icon {
+    color: black;
+    margin-left: 0.5rem;
+    flex-shrink: 0;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: white;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    min-width: 150px;
+    margin-top: 0.25rem;
+    max-height: 20rem;
+    overflow-y: auto;
+}
+
+.dropdown-item {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 0.75rem 1rem;
+    border: none;
+    background: none;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.9rem;
+    color: black;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+}
+
+.dropdown-item:hover {
+    background-color: #f5f5f5;
+}
+
+.dropdown-item.active {
+    font-weight: 700;
+    background-color: #efefef;
+}

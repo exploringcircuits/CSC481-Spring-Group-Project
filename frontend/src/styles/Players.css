@@ -1,0 +1,50 @@
+.main-content>.players-page {
+    align-items: flex-start !important;
+    justify-content: flex-start !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    padding: 1rem 2rem !important;
+    margin-top: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    box-sizing: border-box !important;
+    height: calc(100vh - 150px);
+}
+
+.players-page {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0;
+    height: 100%;
+}
+
+.players-page .login-heading {
+    width: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 0 !important;
+    flex-shrink: 0;
+}
+
+.players-page .players-filter-card {
+    width: 100%;
+    margin: 0;
+    flex-shrink: 0;
+}
+
+.players-page .players-data-table-card {
+    width: 100%;
+    flex: 1;
+    min-height: 200px;
+    margin: 0;
+    margin-top: 1rem;
+    overflow-y: auto;
+}
+
+.players-page .switch-league-button {
+    margin: 0;
+    flex-shrink: 0;
+}

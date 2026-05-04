@@ -1,0 +1,126 @@
+/* PlayersFilterCard Base Styles */
+
+.players-filter-card {
+    background-color: white;
+    padding: 0 !important;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    box-shadow: 15px 15px 30px rgba(0, 0, 0, 1);
+    position: relative;
+}
+
+.players-section-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem 1.75rem 1.75rem 1.75rem;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.players-header-left {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+    flex: 1;
+}
+
+.players-title-row {
+    display: flex;
+    align-items: flex-end;
+    gap: 0.5rem;
+}
+
+.players-section-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: black;
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 1;
+}
+
+.players-league-name {
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.9rem;
+    color: black;
+    opacity: 0.5;
+    margin: 0;
+    padding: 0;
+    white-space: nowrap;
+}
+
+.players-filters-container {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.filter-stat-qualifier-column {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    max-width: 150px;
+}
+
+.players-info-label {
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.9rem;
+    color: black;
+    opacity: 1;
+    margin: 0;
+    padding: 0;
+    margin-right: 0.25rem;
+}
+
+.calendar-icon-wrapper {
+    padding-top: 2.3rem;
+}
+
+.players-card-footer {
+    position: absolute;
+    bottom: 1rem;
+    right: 1.75rem;
+}
+
+/* SearchInput positioning in filter card */
+.player-search-container {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    background-color: #b4b4b4;
+    border: none;
+    flex-shrink: 0;
+    min-width: 250px;
+}
+
+.player-search-icon {
+    color: rgb(80, 80, 80);
+    flex-shrink: 0;
+}
+
+.player-search-input {
+    flex: 1;
+    min-width: 0;
+    padding: 0;
+    border: none;
+    background-color: transparent;
+    color: black;
+    font-size: 1rem;
+    font-family: 'Poppins', sans-serif;
+}
+
+.player-search-input::placeholder {
+    color: rgb(80, 80, 80);
+}
+
+.player-search-input:focus {
+    outline: none;
+}

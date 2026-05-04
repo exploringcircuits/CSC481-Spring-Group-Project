@@ -1,0 +1,84 @@
+/* Button Component Styles */
+
+.btn {
+    font-family: 'Poppins', sans-serif;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+/* Size Variants */
+.btn--sm {
+    padding: 0.375rem 0.75rem;
+    font-size: 0.75rem;
+}
+
+.btn--md {
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+}
+
+.btn--lg {
+    padding: 0.75rem 1.5rem;
+    font-size: 0.95rem;
+}
+
+/* Color Variants */
+.btn--primary {
+    background-color: #6a1523;
+    color: white;
+}
+
+.btn--primary:hover:not(:disabled) {
+    background-color: #5a1220;
+    opacity: 0.9;
+}
+
+.btn--secondary {
+    background-color: #b4b4b4;
+    color: black;
+}
+
+.btn--secondary:hover:not(:disabled) {
+    opacity: 0.9;
+}
+
+.btn--gradient {
+    background: linear-gradient(65deg, #6a1523, #ffc987);
+    color: white;
+}
+
+.btn--gradient:hover:not(:disabled) {
+    opacity: 0.9;
+}
+
+.btn--outline {
+    background: none;
+    border: 1px solid #b4b4b4;
+    color: black;
+}
+
+.btn--outline:hover:not(:disabled) {
+    background-color: #f5f5f5;
+}
+
+/* States */
+.btn--full-width {
+    width: 100%;
+}
+
+.btn--disabled,
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.btn:active:not(:disabled) {
+    transform: scale(0.98);
+}
