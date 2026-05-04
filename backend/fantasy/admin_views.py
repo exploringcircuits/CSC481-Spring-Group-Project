@@ -169,25 +169,17 @@ def run_draft(request, league_id):
     total_picks = len(draft.draft_order) * league.roster_size
     taken_player_ids = set(DraftSelection.objects.filter(draft=draft).values_list("player_id", flat=True))
 
+    # Use the shared _record_pick helper so admin auto-runs also produce
+    # per-pick Transaction rows (so they show up in the activity feed).
+    from .views import _record_pick
+
     while draft.current_pick_index < total_picks:
         member_id = snake_pick_pointer(draft.draft_order, draft.current_pick_index)
         member = LeagueMember.objects.get(pk=member_id)
-        team = member.team
         player = autopick_for_member(league, taken_player_ids)
         if player is None:
             break
-
-        round_number = (draft.current_pick_index // len(draft.draft_order)) + 1
-        DraftSelection.objects.create(
-            draft=draft,
-            member=member,
-            player=player,
-            pick_number=draft.current_pick_index + 1,
-            round_number=round_number,
-        )
-        Roster.objects.create(team=team, player=player, acquired_via="draft")
-        taken_player_ids.add(player.id)
-        draft.current_pick_index += 1
+        _record_pick(draft, league, member, player, taken_player_ids)
 
     draft.status = DraftStatus.COMPLETE
     draft.completed_at = datetime.now(timezone.utc)

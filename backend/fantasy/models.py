@@ -90,6 +90,13 @@ class Player(models.Model):
     is_injured = models.BooleanField(default=False)
     injury_status = models.CharField(max_length=200, blank=True)
 
+    # Bio. Populated by sync_nba_data via stats.nba.com leaguedashplayerbiostats.
+    height_inches = models.PositiveSmallIntegerField(null=True, blank=True)
+    weight_lbs = models.PositiveSmallIntegerField(null=True, blank=True)
+    jersey_number = models.CharField(max_length=4, blank=True)
+
+    # (Player model continues below — the next field is bbref_id.)
+
     # Optional cross-reference to basketball-reference / NBA IDs
     bbref_id = models.CharField(max_length=40, blank=True, db_index=True)
     nba_player_id = models.IntegerField(null=True, blank=True, db_index=True)
@@ -487,6 +494,7 @@ class Draft(models.Model):
     current_pick_index = models.IntegerField(default=0, help_text="0-based pointer into the snake order.")
     started_at = models.DateTimeField(null=True, blank=True)
     completed_at = models.DateTimeField(null=True, blank=True)
+    is_paused = models.BooleanField(default=False, help_text="Commissioner-controlled pause flag — bots stop auto-filling while true.")
 
     def __str__(self) -> str:
         return f"Draft for {self.league.name}"
@@ -566,6 +574,9 @@ class TradeAsset(models.Model):
 class TransactionType(models.TextChoices):
     DRAFT_PICK = "draft_pick", "Draft pick"
     TRADE = "trade", "Trade"
+    TRADE_PROPOSED = "trade_proposed", "Trade proposed"
+    TRADE_REJECTED = "trade_rejected", "Trade rejected"
+    TRADE_CANCELLED = "trade_cancelled", "Trade cancelled"
     LINEUP_SET = "lineup_set", "Lineup set"
     WEEK_ADVANCED = "week_advanced", "Week advanced"
     COMMISSIONER_OVERRIDE = "commissioner_override", "Commissioner override"

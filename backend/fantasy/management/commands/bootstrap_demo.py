@@ -1,5 +1,5 @@
 """One-shot setup for a fresh checkout: migrate, seed admin, sync NBA data,
-generate per-day stats.
+populate NBA player IDs (for headshot CDN), generate per-day stats.
 
 Idempotent — safe to re-run. The heavy `generate_player_game_stats` step is
 skipped on re-runs unless `--regenerate-stats` is passed.
@@ -31,18 +31,21 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args, regenerate_stats, season_end_year, start_date, **kwargs):
-        self.stdout.write(self.style.SUCCESS("\n=== 1/4 applying migrations ==="))
+        self.stdout.write(self.style.SUCCESS("\n=== 1/5 applying migrations ==="))
         call_command("migrate", "--noinput")
 
-        self.stdout.write(self.style.SUCCESS("\n=== 2/4 ensuring admin user ==="))
+        self.stdout.write(self.style.SUCCESS("\n=== 2/5 ensuring admin user ==="))
         call_command("seed_admin_user")
 
-        self.stdout.write(self.style.SUCCESS("\n=== 3/4 syncing NBA player data ==="))
+        self.stdout.write(self.style.SUCCESS("\n=== 3/5 syncing NBA player data ==="))
         call_command("sync_nba_data", season_end_year=season_end_year)
+
+        self.stdout.write(self.style.SUCCESS("\n=== 4/5 populating NBA player IDs (headshot CDN) ==="))
+        call_command("populate_nba_player_ids")
 
         from fantasy.models import PlayerGameStats
 
-        self.stdout.write(self.style.SUCCESS("\n=== 4/4 generating per-day stats ==="))
+        self.stdout.write(self.style.SUCCESS("\n=== 5/5 generating per-day stats ==="))
         if regenerate_stats or not PlayerGameStats.objects.exists():
             call_command(
                 "generate_player_game_stats",
@@ -56,7 +59,7 @@ class Command(BaseCommand):
                 "Stats already present — skipping. Pass --regenerate-stats to redo."
             )
 
-        self.stdout.write(self.style.SUCCESS("\nReady to roll."))
+        self.stdout.write(self.style.SUCCESS("\nFantasy Fanatics demo ready."))
         self.stdout.write("Start the dev servers in two terminals:")
         self.stdout.write("  Backend:   python manage.py runserver 8001   (from backend/)")
         self.stdout.write("  Frontend:  npm run dev                       (from frontend/)")

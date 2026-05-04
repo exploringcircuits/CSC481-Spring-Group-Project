@@ -34,7 +34,12 @@ export interface Player {
   is_active: boolean
   is_injured: boolean
   injury_status: string
+  height_inches: number | null
+  weight_lbs: number | null
+  jersey_number: string
+  nba_player_id: number | null
   current_season: PlayerSeasonAverage | null
+  season_averages: PlayerSeasonAverage[]
 }
 
 export interface PlayerLight {
@@ -45,7 +50,26 @@ export interface PlayerLight {
   is_active: boolean
   is_injured: boolean
   injury_status: string
+  nba_player_id: number | null
   fantasy_ppg: number | null
+}
+
+export interface PlayerGameStats {
+  id: number
+  game_date: string
+  minutes: number
+  pts: number
+  reb: number
+  ast: number
+  stl: number
+  blk: number
+  tov: number
+  fgm: number
+  fga: number
+  ftm: number
+  fta: number
+  fg3m: number
+  did_play: boolean
 }
 
 export interface LeagueMember {
@@ -68,6 +92,8 @@ export interface TeamLight {
   points_against: number
   record: string
   member: LeagueMember
+  /** Optional, only populated by the standings endpoint. */
+  last_5?: ("W" | "L" | "T")[]
 }
 
 export interface RosterEntry {
@@ -160,6 +186,7 @@ export interface Draft {
   current_pick_index: number
   started_at: string | null
   completed_at: string | null
+  is_paused: boolean
   on_the_clock: number | null
   selections: DraftSelection[]
 }

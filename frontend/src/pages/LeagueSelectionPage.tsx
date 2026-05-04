@@ -3,13 +3,7 @@ import { useNavigate } from "react-router-dom"
 import { toast } from "sonner"
 
 import { Button } from "@/components/ui/button"
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
+import { Card, CardContent } from "@/components/ui/card"
 import {
   Dialog,
   DialogContent,
@@ -31,12 +25,12 @@ import {
 } from "@/services/leagues"
 import type { LeagueListItem } from "@/types/league"
 
-const LEAGUE_STATUS_LABEL: Record<string, string> = {
-  setup: "Setup",
-  drafting: "Drafting",
-  regular: "Regular Season",
-  playoffs: "Playoffs",
-  complete: "Complete",
+const LEAGUE_STATUS: Record<string, { label: string; tone: string }> = {
+  setup:    { label: "Setup",    tone: "bg-muted text-muted-foreground border-border" },
+  drafting: { label: "Drafting", tone: "bg-secondary text-primary border-primary/40" },
+  regular:  { label: "Regular",  tone: "bg-primary/15 text-primary border-primary/40" },
+  playoffs: { label: "Playoffs", tone: "bg-amber-500/15 text-amber-400 border-amber-500/40" },
+  complete: { label: "Complete", tone: "bg-emerald-500/15 text-emerald-400 border-emerald-500/40" },
 }
 
 export function LeagueSelectionPage() {
@@ -64,8 +58,8 @@ export function LeagueSelectionPage() {
     <div className="space-y-6">
       <header className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight">Your leagues</h1>
-          <p className="text-sm text-muted-foreground">
+          <div className="text-display text-4xl md:text-5xl text-foreground leading-none">MY LEAGUES</div>
+          <p className="text-sm text-muted-foreground mt-2">
             Pick a league to manage, or start something new.
           </p>
         </div>
@@ -105,44 +99,54 @@ export function LeagueSelectionPage() {
         </Card>
       ) : (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {leagues.map((league) => (
-            <Card
-              key={league.id}
-              role="button"
-              tabIndex={0}
-              onClick={() => navigate(`/leagues/${league.id}`)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" || e.key === " ") navigate(`/leagues/${league.id}`)
-              }}
-              className="cursor-pointer transition-colors hover:bg-muted/40"
-            >
-              <CardHeader className="pb-3">
-                <div className="flex items-start justify-between gap-2">
-                  <div>
-                    <CardTitle className="text-lg leading-tight">{league.name}</CardTitle>
-                    <CardDescription className="mt-1">
-                      {league.season_label} season
-                    </CardDescription>
+          {leagues.map((league) => {
+            const status = LEAGUE_STATUS[league.status] ?? { label: league.status, tone: "bg-muted text-muted-foreground border-border" }
+            return (
+              <div
+                key={league.id}
+                role="button"
+                tabIndex={0}
+                onClick={() => navigate(`/leagues/${league.id}`)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") navigate(`/leagues/${league.id}`)
+                }}
+                className="group rounded-xl border border-border bg-card overflow-hidden cursor-pointer hover:border-primary/40 transition-all hover:-translate-y-0.5 hover:shadow-xl hover:shadow-primary/5"
+              >
+                <div className="gradient-court px-5 py-4 border-b border-border">
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="min-w-0 flex-1">
+                      <div className="text-display text-2xl text-foreground leading-tight truncate">{league.name.toUpperCase()}</div>
+                      <div className="text-xs text-muted-foreground mt-1">{league.season_label} Season</div>
+                    </div>
+                    <span className={`inline-flex shrink-0 px-2.5 py-1 rounded-full border text-[10px] font-bold uppercase tracking-wider ${status.tone}`}>
+                      {status.label}
+                    </span>
                   </div>
-                  <Badge variant="secondary">
-                    {LEAGUE_STATUS_LABEL[league.status] ?? league.status}
-                  </Badge>
                 </div>
-              </CardHeader>
-              <CardContent className="text-sm text-muted-foreground">
-                <div className="flex items-center justify-between">
-                  <span>
-                    {league.member_count} of {league.max_teams} teams
-                  </span>
-                  {league.is_commissioner && <Badge variant="outline">Commissioner</Badge>}
+                <div className="px-5 py-3 space-y-2">
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-muted-foreground">Teams</span>
+                    <span className="font-bold">{league.member_count} / {league.max_teams}</span>
+                  </div>
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-muted-foreground">Week</span>
+                    <span className="font-bold stat-num">{league.current_week_number || "—"}</span>
+                  </div>
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-muted-foreground">Invite</span>
+                    <code className="font-mono text-xs bg-muted px-1.5 py-0.5 rounded">{league.invite_code}</code>
+                  </div>
+                  {league.is_commissioner && (
+                    <div className="pt-2 border-t border-border/40">
+                      <Badge variant="outline" className="text-[10px] border-primary/50 text-primary">
+                        Commissioner
+                      </Badge>
+                    </div>
+                  )}
                 </div>
-                <div className="mt-1">
-                  Week {league.current_week_number || "—"} · Invite code{" "}
-                  <span className="font-mono text-foreground">{league.invite_code}</span>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+              </div>
+            )
+          })}
         </div>
       )}
     </div>

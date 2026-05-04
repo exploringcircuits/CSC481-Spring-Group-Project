@@ -178,6 +178,10 @@ class Command(BaseCommand):
             timeout=30,
         )
         resp.raise_for_status()
+        # basketball-reference serves UTF-8 but doesn't always send a charset
+        # header, so requests falls back to ISO-8859-1 which mangles names like
+        # "Jokić" / "Dončić". Force UTF-8 explicitly.
+        resp.encoding = "utf-8"
         cache_file.write_text(resp.text, encoding="utf-8")
         return resp.text
 

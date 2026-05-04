@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 56" role="img" aria-label="Fantasy Fanatics">
+  <defs>
+    <linearGradient id="ball" x1="0" y1="0" x2="44" y2="44" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#F2C95A"/>
+      <stop offset="55%" stop-color="#E8B339"/>
+      <stop offset="100%" stop-color="#9F7B1F"/>
+    </linearGradient>
+    <linearGradient id="word" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#F5EFE0"/>
+      <stop offset="100%" stop-color="#D4C8AA"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Basketball icon -->
+  <g transform="translate(6 6)">
+    <circle cx="22" cy="22" r="22" fill="url(#ball)"/>
+    <g stroke="#1A1326" stroke-width="2.2" stroke-linecap="round" fill="none">
+      <line x1="22" y1="1.5" x2="22" y2="42.5"/>
+      <line x1="1.5" y1="22" x2="42.5" y2="22"/>
+      <path d="M5.5 8 Q22 22 5.5 36"/>
+      <path d="M38.5 8 Q22 22 38.5 36"/>
+    </g>
+    <ellipse cx="14" cy="13" rx="6" ry="3.5" fill="#FFE9B6" opacity="0.35"/>
+  </g>
+
+  <!-- Wordmark -->
+  <g transform="translate(64 38)">
+    <text
+      x="0" y="0"
+      font-family="Anton, Impact, 'Arial Narrow', sans-serif"
+      font-size="34"
+      letter-spacing="2"
+      fill="url(#word)"
+    >FANTASY FANATICS</text>
+    <rect x="0" y="6" width="248" height="2" fill="#E8B339"/>
+  </g>
+</svg>

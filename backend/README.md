@@ -1,8 +1,9 @@
-# Fantasy Hoops — backend
+# Fantasy Fanatics — backend
 
-Django 6 + Django REST Framework + SQLite + SimpleJWT. Two apps, ~15 models,
+Django 6 + Django REST Framework + SQLite + SimpleJWT. Two apps, 15 models,
 one external dependency at ingest time (basketball-reference) and zero at
-runtime.
+runtime. NBA player ID mapping is shipped as static JSON (~5000 entries) so
+the demo runs fully offline.
 
 ```
 backend/
@@ -37,11 +38,16 @@ backend/
     ├── urls.py / admin_urls.py
     ├── admin.py              Django admin registrations for every model
     ├── management/commands/
-    │   ├── bootstrap_demo.py        one-shot setup
+    │   ├── bootstrap_demo.py        one-shot setup (5 steps; idempotent)
     │   ├── sync_nba_data.py         scrape basketball-reference once
-    │   ├── generate_player_game_stats.py    Poisson-noise per-day stats
+    │   ├── populate_nba_player_ids.py    map slugs → stats.nba.com IDs
+    │   ├── generate_player_game_stats.py Poisson-noise per-day stats
     │   └── seed_admin_user.py       create admin@demo.local
-    └── migrations/
+    ├── data/
+    │   ├── cache/
+    │   │   └── bbref_per_game_2026.html   committed scrape snapshot
+    │   └── nba_player_ids.json      ~5000 slug → NBA stats ID entries
+    └── migrations/                  0001 → 0004 all committed
 ```
 
 ## Running
@@ -111,7 +117,7 @@ All in `fantasy/models.py`. Three families:
 
 | Model | Notes |
 |---|---|
-| `Draft` | (league OneToOne, status, draft_order JSON of LeagueMember IDs, current_pick_index). |
+| `Draft` | (league OneToOne, status, draft_order JSON of LeagueMember IDs, current_pick_index, is_paused). The `is_paused` flag (added in `0003_draft_is_paused`) lets the commissioner halt bot autofill. |
 | `DraftSelection` | (draft, member, player, pick_number, round_number). |
 
 **Trade surface**
@@ -125,7 +131,7 @@ All in `fantasy/models.py`. Three families:
 
 | Model | Notes |
 |---|---|
-| `Transaction` | (league, team, type, summary, payload JSON). Append-only audit feed; surfaced in the LeagueHome activity card. |
+| `Transaction` | (league, team, type, summary, payload JSON). Append-only audit feed; surfaced in both the LeagueHome activity card and the dedicated `/transactions` page. The `type` enum (expanded in `0004_alter_transaction_type`) covers `DRAFT_PICK`, `LINEUP_SET`, `TRADE_PROPOSED`, `TRADE_ACCEPTED`, `TRADE_REJECTED`, `TRADE_CANCELLED`, `WEEK_ADVANCED`, `MATCHUP_SETTLED`. |
 
 Defaults baked into `models.py`:
 
@@ -149,26 +155,29 @@ register/login/refresh.
 
 ### Players & leagues (`/api/`)
 
-| Method | Path | Notes |
-|---|---|---|
-| GET | `/players/` | filter by `position`, `team`, `search`, `available_in_league`, `page` |
-| GET | `/players/<id>/` | full Player detail with current-season averages |
-| GET | `/leagues/` | leagues the user is a member of |
-| POST | `/leagues/` | create — payload: name, season_label?, max_teams?, regular_season_weeks?, playoff_team_count?, team_name? |
-| POST | `/leagues/join/` | `{invite_code, team_name?}` |
-| GET | `/leagues/<id>/` | full league detail |
-| GET | `/leagues/<id>/standings/` | sorted Team[] |
-| GET | `/leagues/<id>/weeks/` | every week + matchups |
-| GET | `/leagues/<id>/weeks/<n>/` | single week |
-| GET | `/leagues/<id>/draft/` | Draft state + selections + on_the_clock |
-| POST | `/leagues/<id>/draft/pick/` | `{player_id}` — must be the on-clock member (or admin) |
-| GET | `/leagues/<id>/trades/` | trades for the league |
-| POST | `/leagues/<id>/trades/propose/` | `{recipient_team_id, proposer_player_ids[], recipient_player_ids[], note?}` |
-| GET | `/leagues/<id>/transactions/` | last 200 audit-log entries |
-| POST | `/trades/<id>/respond/` | `{action: "accept" \| "reject" \| "cancel"}` |
-| GET | `/teams/<id>/` | full team detail with roster |
-| GET | `/teams/<id>/lineup/?week_id=<id>` | lineup entries for a week |
-| POST | `/teams/<id>/lineup/` | `{week_id, assignments: {slot: player_id, ...}}` |
+| Method | Path | Auth | Notes |
+|---|---|---|---|
+| GET | `/players/` | **public** | filter by `position`, `team`, `search`, `available_in_league`, `page`. Public because the no-account `/mock-draft` sandbox needs it. |
+| GET | `/players/<id>/` | required | full Player detail with current-season averages |
+| GET | `/players/<id>/game-log/?limit=N` | required | recent `PlayerGameStats` rows (≤ 82, no pagination) |
+| GET | `/leagues/` | required | leagues the user is a member of |
+| POST | `/leagues/` | required | create — payload: name, season_label?, max_teams?, regular_season_weeks?, playoff_team_count?, team_name? |
+| POST | `/leagues/join/` | required | `{invite_code, team_name?}` |
+| GET | `/leagues/<id>/` | member | full league detail |
+| GET | `/leagues/<id>/standings/` | member | sorted Team[] with `last_5: ['W'\|'L'\|'T'][]` per team |
+| GET | `/leagues/<id>/weeks/` | member | every week + matchups |
+| GET | `/leagues/<id>/weeks/<n>/` | member | single week |
+| GET | `/leagues/<id>/draft/` | member | Draft state + selections + on_the_clock + is_paused |
+| POST | `/leagues/<id>/draft/pick/` | member | `{player_id}` — must be the on-clock member (or admin). Bots autofill until the next human turn. |
+| POST | `/leagues/<id>/draft/start/` | commish | Kick off the draft; bots fill picks until the first human is on the clock. |
+| POST | `/leagues/<id>/draft/control/` | commish | `{action: "pause" \| "resume" \| "undo" \| "reset"}` |
+| GET | `/leagues/<id>/trades/` | member | trades for the league |
+| POST | `/leagues/<id>/trades/propose/` | member | `{recipient_team_id, proposer_player_ids[], recipient_player_ids[], note?}` |
+| GET | `/leagues/<id>/transactions/` | member | last 200 audit-log entries |
+| POST | `/trades/<id>/respond/` | member | `{action: "accept" \| "reject" \| "cancel"}`. Reject + cancel both create Transactions. |
+| GET | `/teams/<id>/` | member | full team detail with roster |
+| GET | `/teams/<id>/lineup/?week_id=<id>` | member | lineup entries for a week |
+| POST | `/teams/<id>/lineup/` | member | `{week_id, assignments: {slot: player_id, ...}}` — delete-day-then-create per save (avoids `(team, game_date, player)` unique-constraint thrash mid-edit) |
 
 ### Admin demo panel (`/api/admin/`) — `is_staff` only
 
@@ -191,9 +200,14 @@ register/login/refresh.
 - `IsSiteAdmin` — `request.user.is_staff`. Gates the admin demo panel.
 - `IsLeagueMember` — actor is a member of the URL's `<league_id>`. Site admin
   bypasses (so the demo presenter can view any league).
-- `IsLeagueCommissioner` — actor is the league's commissioner *or* a site admin.
+- `IsLeagueCommissioner` — actor is the league's commissioner *or* a site
+  admin. Gates the draft start / control endpoints.
 - All league mutations derive the actor from `request.user` — no email or
   user_id from the request body. JWT is the source of truth.
+- **One public read endpoint:** `PlayerListView.permission_classes =
+  [AllowAny]`. The no-account `/mock-draft` sandbox needs the player pool
+  without authentication. Players are not sensitive data; the list is
+  read-only and identical for every viewer.
 
 ## Scoring
 
@@ -223,6 +237,23 @@ standings, marks `Matchup.is_settled` and `Week.is_settled`.
   highest-FPPG first, position-eligible only.
 - `snake_pick_pointer(draft_order, pick_index)` — round 0 forward, round 1
   reversed, round 2 forward, …
+
+## Draft mechanics
+
+Two helpers in `fantasy/views.py` are the canonical pick-mutation path:
+
+- `_record_pick(draft, league, member, player, taken_player_ids)` — creates
+  the `DraftSelection`, the `Roster` row, and the `DRAFT_PICK` `Transaction`
+  with `payload={player_id, pick_number, round_number, is_bot}`, then bumps
+  `draft.current_pick_index`.
+- `_autofill_bots(draft, league, taken_player_ids)` — runs after a human
+  pick (or on `/draft/start/`). While the on-clock member `is_bot` and the
+  draft isn't paused or complete, bots greedy-pick the highest projected
+  FPPG available. Idempotent — safe to call repeatedly.
+
+Both `DraftPickView.post` and `DraftStartView.post` call `_autofill_bots`
+after their own work; the admin demo panel's `run_draft` reuses
+`_record_pick` so admin auto-completion populates the same activity feed.
 
 ## Management commands
 

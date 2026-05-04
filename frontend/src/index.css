@@ -1,13 +1,96 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
-@import "@fontsource-variable/geist";
+@import "@fontsource-variable/inter";
+@import "@fontsource/anton/400.css";
+@import "@fontsource/saira-condensed/400.css";
+@import "@fontsource/saira-condensed/600.css";
+@import "@fontsource/saira-condensed/700.css";
+@import "@fontsource/jetbrains-mono/400.css";
+@import "@fontsource/jetbrains-mono/500.css";
 
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-    --font-heading: var(--font-sans);
-    --font-sans: 'Geist Variable', sans-serif;
+    /* === Gold scale === */
+    --gold:        oklch(0.78 0.150 85);   /* championship gold (#E8B339) */
+    --gold-bright: oklch(0.88 0.155 85);   /* highlight */
+    --gold-deep:   oklch(0.58 0.135 80);   /* pressed / accent ink */
+    --gold-soft:   oklch(0.78 0.055 85);   /* desaturated for tints */
+
+    /* === Court accent (warm leather / hardwood) === */
+    --court:       oklch(0.65 0.130 55);   /* warm orange-tan */
+    --court-deep:  oklch(0.42 0.105 50);   /* dark leather */
+
+    /* === Midnight scale === */
+    --midnight:          oklch(0.13 0.025 260);
+    --midnight-elevated: oklch(0.17 0.025 260);
+    --midnight-card:     oklch(0.20 0.025 260);
+    --midnight-line:     oklch(0.30 0.020 260);
+
+    /* === Ivory (warm white text) === */
+    --ivory:      oklch(0.96 0.008 85);
+    --ivory-dim:  oklch(0.78 0.010 85);
+
+    /* === Legacy aliases (kept so old class refs keep compiling
+           while pages are rewritten; safe to retire later). === */
+    --brand-red:              var(--gold);
+    --brand-red-hover:        var(--gold-bright);
+    --brand-blue:             oklch(0.55 0.10 240);
+    --brand-anchor:           oklch(0.34 0.005 264);
+    --brand-legacy-burgundy:  oklch(0.32 0.050 260); /* now a deep navy */
+    --brand-legacy-tan:       var(--gold);
+
+    /* === Position chips === */
+    --pos-pg: oklch(0.72 0.14 250);
+    --pos-sg: oklch(0.74 0.12 215);
+    --pos-sf: oklch(0.70 0.15 145);
+    --pos-pf: oklch(0.74 0.15 50);
+    --pos-c:  oklch(0.70 0.18 30);
+
+    /* === Injury-status badges === */
+    --status-out: oklch(0.62 0.20 25);
+    --status-dtd: oklch(0.72 0.16 50);
+    --status-q:   oklch(0.78 0.13 90);
+    --status-d:   oklch(0.68 0.18 30);
+    --status-ir:  oklch(0.55 0.05 264);
+    --status-na:  oklch(0.6 0.005 264);
+
+    /* === Color utilities exposed to Tailwind === */
+    --color-gold:        var(--gold);
+    --color-gold-bright: var(--gold-bright);
+    --color-gold-deep:   var(--gold-deep);
+    --color-gold-soft:   var(--gold-soft);
+    --color-court:       var(--court);
+    --color-court-deep:  var(--court-deep);
+    --color-midnight:    var(--midnight);
+    --color-ivory:       var(--ivory);
+    --color-ivory-dim:   var(--ivory-dim);
+
+    --color-brand-red: var(--gold);
+    --color-brand-blue: var(--brand-blue);
+    --color-brand-anchor: var(--brand-anchor);
+    --color-brand-legacy-burgundy: var(--brand-legacy-burgundy);
+    --color-brand-legacy-tan: var(--gold);
+    --color-pos-pg: var(--pos-pg);
+    --color-pos-sg: var(--pos-sg);
+    --color-pos-sf: var(--pos-sf);
+    --color-pos-pf: var(--pos-pf);
+    --color-pos-c: var(--pos-c);
+    --color-status-out: var(--status-out);
+    --color-status-dtd: var(--status-dtd);
+    --color-status-q:   var(--status-q);
+    --color-status-d:   var(--status-d);
+    --color-status-ir:  var(--status-ir);
+    --color-status-na:  var(--status-na);
+
+    /* === Typography === */
+    --font-display: 'Anton', Impact, 'Arial Narrow', sans-serif;
+    --font-heading: 'Saira Condensed', 'Inter Variable', system-ui, sans-serif;
+    --font-sans:    'Inter Variable', Inter, system-ui, sans-serif;
+    --font-mono:    'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+
+    /* === shadcn token mapping === */
     --color-sidebar-ring: var(--sidebar-ring);
     --color-sidebar-border: var(--sidebar-border);
     --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -39,8 +122,10 @@
     --color-card: var(--card);
     --color-foreground: var(--foreground);
     --color-background: var(--background);
-    --radius-sm: calc(var(--radius) * 0.6);
-    --radius-md: calc(var(--radius) * 0.8);
+
+    /* === Radius scale (sharp; pill-shaped uses rounded-full directly) === */
+    --radius-sm: calc(var(--radius) * 0.5);
+    --radius-md: calc(var(--radius) * 0.75);
     --radius-lg: var(--radius);
     --radius-xl: calc(var(--radius) * 1.4);
     --radius-2xl: calc(var(--radius) * 1.8);
@@ -48,83 +133,233 @@
     --radius-4xl: calc(var(--radius) * 2.6);
 }
 
-:root {
-    --background: oklch(1 0 0);
-    --foreground: oklch(0.145 0 0);
-    --card: oklch(1 0 0);
-    --card-foreground: oklch(0.145 0 0);
-    --popover: oklch(1 0 0);
-    --popover-foreground: oklch(0.145 0 0);
-    --primary: oklch(0.205 0 0);
-    --primary-foreground: oklch(0.985 0 0);
-    --secondary: oklch(0.97 0 0);
-    --secondary-foreground: oklch(0.205 0 0);
-    --muted: oklch(0.97 0 0);
-    --muted-foreground: oklch(0.556 0 0);
-    --accent: oklch(0.97 0 0);
-    --accent-foreground: oklch(0.205 0 0);
-    --destructive: oklch(0.577 0.245 27.325);
-    --border: oklch(0.922 0 0);
-    --input: oklch(0.922 0 0);
-    --ring: oklch(0.708 0 0);
-    --chart-1: oklch(0.87 0 0);
-    --chart-2: oklch(0.556 0 0);
-    --chart-3: oklch(0.439 0 0);
-    --chart-4: oklch(0.371 0 0);
-    --chart-5: oklch(0.269 0 0);
-    --radius: 0.625rem;
-    --sidebar: oklch(0.985 0 0);
-    --sidebar-foreground: oklch(0.145 0 0);
-    --sidebar-primary: oklch(0.205 0 0);
-    --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.97 0 0);
-    --sidebar-accent-foreground: oklch(0.205 0 0);
-    --sidebar-border: oklch(0.922 0 0);
-    --sidebar-ring: oklch(0.708 0 0);
-}
-
+/* Dark-only: tokens defined directly on :root, dark class applied permanently
+   in index.html. Light tokens not shipped. */
+:root,
 .dark {
-    --background: oklch(0.145 0 0);
-    --foreground: oklch(0.985 0 0);
-    --card: oklch(0.205 0 0);
-    --card-foreground: oklch(0.985 0 0);
-    --popover: oklch(0.205 0 0);
-    --popover-foreground: oklch(0.985 0 0);
-    --primary: oklch(0.922 0 0);
-    --primary-foreground: oklch(0.205 0 0);
-    --secondary: oklch(0.269 0 0);
-    --secondary-foreground: oklch(0.985 0 0);
-    --muted: oklch(0.269 0 0);
-    --muted-foreground: oklch(0.708 0 0);
-    --accent: oklch(0.269 0 0);
-    --accent-foreground: oklch(0.985 0 0);
-    --destructive: oklch(0.704 0.191 22.216);
-    --border: oklch(1 0 0 / 10%);
-    --input: oklch(1 0 0 / 15%);
-    --ring: oklch(0.556 0 0);
-    --chart-1: oklch(0.87 0 0);
-    --chart-2: oklch(0.556 0 0);
-    --chart-3: oklch(0.439 0 0);
-    --chart-4: oklch(0.371 0 0);
-    --chart-5: oklch(0.269 0 0);
-    --sidebar: oklch(0.205 0 0);
-    --sidebar-foreground: oklch(0.985 0 0);
-    --sidebar-primary: oklch(0.488 0.243 264.376);
-    --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.269 0 0);
-    --sidebar-accent-foreground: oklch(0.985 0 0);
-    --sidebar-border: oklch(1 0 0 / 10%);
-    --sidebar-ring: oklch(0.556 0 0);
+    --background:           var(--midnight);
+    --foreground:           var(--ivory);
+    --card:                 var(--midnight-card);
+    --card-foreground:      var(--ivory);
+    --popover:              var(--midnight-elevated);
+    --popover-foreground:   var(--ivory);
+    --primary:              var(--gold);
+    --primary-foreground:   var(--midnight);
+    --secondary:            var(--midnight-elevated);
+    --secondary-foreground: var(--ivory);
+    --muted:                var(--midnight-elevated);
+    --muted-foreground:     var(--ivory-dim);
+    --accent:               var(--court);
+    --accent-foreground:    var(--midnight);
+    --destructive:          oklch(0.62 0.20 25);
+    --border:               var(--midnight-line);
+    --input:                var(--midnight-elevated);
+    --ring:                 var(--gold);
+    --chart-1:              var(--gold);
+    --chart-2:              var(--court);
+    --chart-3:              oklch(0.62 0.12 220);
+    --chart-4:              oklch(0.65 0.18 145);
+    --chart-5:              oklch(0.55 0.10 280);
+    --radius:               0.25rem; /* 4px — subtle, sharp UI */
+    --sidebar:                       oklch(0.16 0.025 260);
+    --sidebar-foreground:            var(--ivory);
+    --sidebar-primary:               var(--gold);
+    --sidebar-primary-foreground:    var(--midnight);
+    --sidebar-accent:                var(--midnight-elevated);
+    --sidebar-accent-foreground:     var(--ivory);
+    --sidebar-border:                var(--midnight-line);
+    --sidebar-ring:                  var(--gold);
 }
 
 @layer base {
-  * {
-    @apply border-border outline-ring/50;
+    * {
+        @apply border-border outline-ring/50;
     }
-  body {
-    @apply bg-background text-foreground;
+    body {
+        @apply bg-background text-foreground antialiased;
+        font-feature-settings: "ss01", "cv11";
     }
-  html {
-    @apply font-sans;
+    html {
+        @apply font-sans;
+        color-scheme: dark;
+    }
+    h1, h2, h3, h4 {
+        font-family: var(--font-heading);
+        font-weight: 700;
+        letter-spacing: -0.005em;
+    }
+}
+
+@layer utilities {
+    /* Hero / surface gradients — kept very subtle and diffused.
+       The gold accents stay below 0.10 alpha so they read as ambient
+       lighting, not as a separate band of color. */
+    .gradient-brand {
+        background: linear-gradient(135deg,
+            oklch(0.26 0.040 260) 0%,
+            var(--court-deep) 60%,
+            oklch(0.22 0.025 260) 100%);
+    }
+    .gradient-court {
+        background:
+            linear-gradient(180deg,
+                oklch(0.18 0.025 260) 0%,
+                oklch(0.16 0.025 260) 100%);
+    }
+    .gradient-hero-dark {
+        background:
+            radial-gradient(at 22% 18%, oklch(0.78 0.150 85 / 0.08) 0px, transparent 70%),
+            radial-gradient(at 78% 8%, oklch(0.30 0.040 260 / 0.45) 0px, transparent 65%),
+            radial-gradient(at 50% 110%, oklch(0.32 0.050 260 / 0.30) 0px, transparent 60%),
+            var(--midnight);
+    }
+    .gradient-spotlight {
+        background:
+            radial-gradient(ellipse at top, oklch(0.78 0.150 85 / 0.07) 0%, transparent 70%),
+            var(--midnight);
+    }
+
+    /* Typographic helpers */
+    .text-display {
+        font-family: var(--font-display);
+        font-weight: 400;
+        letter-spacing: 0.01em;
+        line-height: 0.92;
+        text-transform: uppercase;
+    }
+    .text-heading {
+        font-family: var(--font-heading);
+        font-weight: 700;
+        letter-spacing: -0.005em;
+    }
+    .text-condensed {
+        font-family: var(--font-heading);
+        font-weight: 600;
+        letter-spacing: 0.02em;
+    }
+    .text-eyebrow {
+        font-family: var(--font-heading);
+        font-weight: 600;
+        font-size: 0.6875rem;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--ivory-dim);
+    }
+    .stat-num {
+        font-family: var(--font-mono);
+        font-variant-numeric: tabular-nums;
+        font-feature-settings: "tnum";
+    }
+    .stat-display {
+        font-family: var(--font-display);
+        font-variant-numeric: tabular-nums;
+        font-feature-settings: "tnum";
+        letter-spacing: 0.01em;
+    }
+
+    /* Surface treatments */
+    .surface-elevated {
+        background: linear-gradient(180deg, var(--midnight-card), oklch(0.18 0.025 260));
+        border: 1px solid var(--midnight-line);
+    }
+    .scoreboard-row {
+        background: linear-gradient(90deg, transparent, oklch(0.25 0.025 260) 50%, transparent);
+    }
+
+    /* Basketball flourishes */
+    .court-stripe {
+        position: relative;
+    }
+    .court-stripe::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-image:
+            repeating-linear-gradient(
+                115deg,
+                transparent 0,
+                transparent 36px,
+                oklch(0.78 0.150 85 / 0.04) 36px,
+                oklch(0.78 0.150 85 / 0.04) 37px
+            );
+        pointer-events: none;
+    }
+    .gold-rule {
+        background: linear-gradient(90deg, transparent, var(--gold) 50%, transparent);
+    }
+    .ring-gold {
+        --tw-ring-color: var(--gold);
+    }
+    .ring-brand {
+        --tw-ring-color: var(--gold);
+    }
+
+    /* ----- Sonner toast branding -----
+       Sharp corners, surface-elevated body, Saira Condensed title,
+       colored left-border accent per status. */
+    .ff-toast {
+        background: linear-gradient(180deg, var(--midnight-card), oklch(0.18 0.025 260)) !important;
+        border: 1px solid var(--midnight-line) !important;
+        border-left: 3px solid var(--gold) !important;
+        border-radius: 0 !important;
+        color: var(--ivory) !important;
+        box-shadow: 0 6px 24px -8px oklch(0 0 0 / 0.6),
+                    0 0 0 1px oklch(0.78 0.150 85 / 0.08) !important;
+        padding: 12px 14px !important;
+    }
+    .ff-toast-title {
+        font-family: var(--font-heading) !important;
+        font-weight: 700 !important;
+        letter-spacing: 0.02em !important;
+        text-transform: uppercase !important;
+        font-size: 0.75rem !important;
+        color: var(--ivory) !important;
+    }
+    .ff-toast-desc {
+        font-size: 0.8125rem !important;
+        color: var(--ivory-dim) !important;
+        margin-top: 2px !important;
+    }
+    .ff-toast-action {
+        background: var(--gold) !important;
+        color: var(--midnight) !important;
+        border: none !important;
+        border-radius: 0 !important;
+        font-family: var(--font-heading) !important;
+        font-weight: 700 !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.06em !important;
+        font-size: 0.6875rem !important;
+        padding: 6px 10px !important;
+    }
+    .ff-toast-cancel {
+        background: transparent !important;
+        color: var(--ivory-dim) !important;
+        border: 1px solid var(--midnight-line) !important;
+        border-radius: 0 !important;
+    }
+    .ff-toast-success {
+        border-left-color: oklch(0.72 0.150 145) !important;
+    }
+    .ff-toast-success [data-icon] {
+        color: oklch(0.72 0.150 145) !important;
+    }
+    .ff-toast-info {
+        border-left-color: var(--gold) !important;
+    }
+    .ff-toast-info [data-icon] {
+        color: var(--gold) !important;
+    }
+    .ff-toast-warning {
+        border-left-color: oklch(0.78 0.150 65) !important;
+    }
+    .ff-toast-warning [data-icon] {
+        color: oklch(0.78 0.150 65) !important;
+    }
+    .ff-toast-error {
+        border-left-color: oklch(0.65 0.18 25) !important;
+    }
+    .ff-toast-error [data-icon] {
+        color: oklch(0.65 0.18 25) !important;
     }
 }

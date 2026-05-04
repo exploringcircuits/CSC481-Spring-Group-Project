@@ -66,11 +66,15 @@ export function LoginPage() {
   }
 
   return (
-    <Card className="w-full max-w-md">
-      <CardHeader>
-        <CardTitle className="text-2xl">Welcome back</CardTitle>
-        <CardDescription>Sign in to manage your fantasy leagues.</CardDescription>
-      </CardHeader>
+    <div className="min-h-screen flex items-center justify-center gradient-hero-dark px-4 py-12">
+      <Card className="w-full max-w-md border-border/60 bg-card/90 backdrop-blur-sm shadow-2xl shadow-black/40">
+        <CardHeader className="text-center pb-4">
+          <Link to="/" className="inline-block">
+            <img src="/fantasy-fanatics-logo.svg" alt="Fantasy Fanatics" className="h-10 w-auto mx-auto mb-3" />
+          </Link>
+          <CardTitle className="text-display text-3xl tracking-wide">WELCOME BACK</CardTitle>
+          <CardDescription>Sign in to manage your fantasy leagues.</CardDescription>
+        </CardHeader>
       <form onSubmit={onSubmit}>
         <CardContent className="space-y-4">
           <div className="space-y-2">
@@ -143,6 +147,7 @@ export function LoginPage() {
           </p>
         </CardFooter>
       </form>
-    </Card>
+      </Card>
+    </div>
   )
 }

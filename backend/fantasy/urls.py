@@ -8,6 +8,7 @@ urlpatterns = [
     # Players
     path("players/", views.PlayerListView.as_view(), name="player-list"),
     path("players/<int:pk>/", views.PlayerDetailView.as_view(), name="player-detail"),
+    path("players/<int:pk>/game-log/", views.PlayerGameLogView.as_view(), name="player-game-log"),
 
     # Leagues
     path("leagues/", views.LeagueListCreateView.as_view(), name="league-list-create"),
@@ -18,6 +19,8 @@ urlpatterns = [
     path("leagues/<int:league_id>/weeks/<int:week_number>/", views.WeekDetailView.as_view(), name="week-detail"),
     path("leagues/<int:league_id>/draft/", views.DraftDetailView.as_view(), name="draft-detail"),
     path("leagues/<int:league_id>/draft/pick/", views.DraftPickView.as_view(), name="draft-pick"),
+    path("leagues/<int:league_id>/draft/start/", views.DraftStartView.as_view(), name="draft-start"),
+    path("leagues/<int:league_id>/draft/control/", views.DraftCommissionerView.as_view(), name="draft-control"),
     path("leagues/<int:league_id>/trades/", views.TradeListView.as_view(), name="trade-list"),
     path("leagues/<int:league_id>/trades/propose/", views.TradeProposeView.as_view(), name="trade-propose"),
     path("leagues/<int:league_id>/transactions/", views.TransactionListView.as_view(), name="transaction-list"),

@@ -42,8 +42,10 @@ class PlayerSeasonAverageSerializer(serializers.ModelSerializer):
 
 
 class PlayerSerializer(serializers.ModelSerializer):
-    """Full Player payload with embedded current-season averages."""
+    """Full Player payload with embedded current-season averages and the
+    full season_averages history so the UI can compare seasons."""
     current_season = serializers.SerializerMethodField()
+    season_averages = serializers.SerializerMethodField()
 
     class Meta:
         model = Player
@@ -51,12 +53,22 @@ class PlayerSerializer(serializers.ModelSerializer):
             "id", "slug", "full_name", "first_name", "last_name",
             "team_abbr", "primary_position", "eligible_positions",
             "is_active", "is_injured", "injury_status",
-            "current_season",
+            "height_inches", "weight_lbs", "jersey_number",
+            "nba_player_id",
+            "current_season", "season_averages",
         )
 
     def get_current_season(self, obj) -> dict | None:
         sa = obj.season_averages.first()
         return PlayerSeasonAverageSerializer(sa).data if sa else None
+
+    def get_season_averages(self, obj) -> list[dict]:
+        # Player.Meta.ordering on PlayerSeasonAverage is ("-pts",) which is
+        # not what callers want; serve newest-first so timelines render right.
+        return PlayerSeasonAverageSerializer(
+            obj.season_averages.order_by("-season"),
+            many=True,
+        ).data
 
 
 class PlayerLightSerializer(serializers.ModelSerializer):
@@ -67,7 +79,8 @@ class PlayerLightSerializer(serializers.ModelSerializer):
         model = Player
         fields = (
             "id", "full_name", "team_abbr", "primary_position",
-            "is_active", "is_injured", "injury_status", "fantasy_ppg",
+            "is_active", "is_injured", "injury_status",
+            "nba_player_id", "fantasy_ppg",
         )
 
     def get_fantasy_ppg(self, obj) -> float | None:
@@ -196,6 +209,7 @@ class DraftSerializer(serializers.ModelSerializer):
         fields = (
             "id", "status", "draft_order", "current_pick_index",
             "started_at", "completed_at",
+            "is_paused",
             "on_the_clock", "selections",
         )
 
