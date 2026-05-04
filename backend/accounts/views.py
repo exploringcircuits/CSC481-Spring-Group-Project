@@ -1,31 +1,47 @@
-import json
-from django.http import JsonResponse
-from django.contrib.auth.models import User
-from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth import get_user_model
+from rest_framework import generics, permissions, status
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework_simplejwt.views import TokenObtainPairView
 
-# Registration endpoint — creates a new user in Django's default auth_user table.
-# @csrf_exempt is used here for local development only.
-@csrf_exempt
-def api_register(request):
-    if request.method == 'POST':
-        try:
-            data = json.loads(request.body)
-            username = data.get('username')
-            password = data.get('password')
-        except json.JSONDecodeError:
-            return JsonResponse({'error': 'Invalid JSON format sent.'}, status=400)
+from .serializers import RegisterSerializer, TokenWithUserSerializer, UserSerializer
 
-        # Validate that both fields were provided
-        if not username or not password:
-            return JsonResponse({'error': 'Username and password are required.'}, status=400)
+User = get_user_model()
 
-        # Check if the username already exists in the database
-        if User.objects.filter(username=username).exists():
-            return JsonResponse({'error': 'Username already taken.'}, status=409)
 
-        # create_user handles password hashing automatically
-        User.objects.create_user(username=username, password=password)
+class RegisterView(generics.CreateAPIView):
+    """Public account-creation endpoint.
 
-        return JsonResponse({'message': 'User created successfully.'}, status=201)
+    Accepts {email, password, display_name?} and returns the created user.
+    """
+    queryset = User.objects.all()
+    serializer_class = RegisterSerializer
+    permission_classes = [permissions.AllowAny]
 
-    return JsonResponse({'error': 'Only POST requests are allowed for registration.'}, status=405)
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.save()
+        return Response(UserSerializer(user).data, status=status.HTTP_201_CREATED)
+
+
+class LoginView(TokenObtainPairView):
+    """JWT token endpoint that also returns the user object."""
+    serializer_class = TokenWithUserSerializer
+
+
+class MeView(APIView):
+    """Return the currently authenticated user."""
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        return Response(UserSerializer(request.user).data)
+
+
+class LogoutView(APIView):
+    """Stateless logout. The client drops its tokens; nothing to do server-side
+    until token blacklisting is added."""
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request):
+        return Response(status=status.HTTP_204_NO_CONTENT)
