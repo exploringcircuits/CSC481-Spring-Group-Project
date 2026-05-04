@@ -1,40 +1,68 @@
-// Stores, retrieves, and removes the JWT access token from localStorage
+import { apiFetch } from "@/services/api"
+import { tokenStorage, userStorage } from "@/lib/storage"
+import type {
+  LoginPayload,
+  LoginResponse,
+  RegisterPayload,
+  User,
+} from "@/types/auth"
 
-const TOKEN_KEY = 'access_token';
+/** Register a new account. Does not log the user in. */
+export async function register(payload: RegisterPayload): Promise<User> {
+  return apiFetch<User>("/api/auth/register/", {
+    method: "POST",
+    body: payload,
+    anonymous: true,
+  })
+}
 
-export const saveToken = (token: string): void => {
-    localStorage.setItem(TOKEN_KEY, token);
-};
+/** Log in and persist tokens + user info to localStorage. */
+export async function login(payload: LoginPayload): Promise<User> {
+  const data = await apiFetch<LoginResponse>("/api/auth/login/", {
+    method: "POST",
+    body: payload,
+    anonymous: true,
+  })
+  tokenStorage.setTokens(data.access, data.refresh)
+  userStorage.set(data.user)
+  return data.user
+}
 
-export const getToken = (): string | null => {
-    return localStorage.getItem(TOKEN_KEY);
-};
-
-export const removeToken = (): void => {
-    localStorage.removeItem(TOKEN_KEY);
-};
-
-export const isAuthenticated = (): boolean => {
-    return getToken() !== null;
-};
-
-// Sends credentials to Django and stores the returned access token
-export const login = async (username: string, password: string): Promise<void> => {
-    const response = await fetch('http://localhost:8000/api/token/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password }),
-    });
-
-    if (!response.ok) {
-        throw new Error('Invalid username or password');
+/** Drop tokens + user info. Optionally hits the backend logout endpoint
+ * (currently a no-op server-side, but good to call for future auditing). */
+export async function logout(): Promise<void> {
+  try {
+    if (tokenStorage.getAccess()) {
+      await apiFetch("/api/auth/logout/", { method: "POST" })
     }
+  } catch {
+    // If the call fails (e.g. token already expired) we still clear local state.
+  } finally {
+    tokenStorage.clear()
+    userStorage.clear()
+  }
+}
 
-    const data = await response.json();
-    // data.access is the JWT access token returned by SimpleJWT
-    saveToken(data.access);
-};
+/** Fetch the current user from the backend. Used to refresh local cache. */
+export async function fetchMe(): Promise<User> {
+  const user = await apiFetch<User>("/api/auth/me/")
+  userStorage.set(user)
+  return user
+}
 
-export const logout = (): void => {
-    removeToken();
-};
+/** Use the refresh token to get a new access token. Returns true on success. */
+export async function refreshAccessToken(): Promise<boolean> {
+  const refresh = tokenStorage.getRefresh()
+  if (!refresh) return false
+  try {
+    const data = await apiFetch<{ access: string }>("/api/auth/refresh/", {
+      method: "POST",
+      body: { refresh },
+      anonymous: true,
+    })
+    tokenStorage.setAccess(data.access)
+    return true
+  } catch {
+    return false
+  }
+}
